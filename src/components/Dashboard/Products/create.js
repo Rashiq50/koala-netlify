@@ -189,7 +189,7 @@ export default function ProductCreate() {
                     <div className="mb-2">Shareable link</div>
                     <div className="flex items-center gap-2">
                         <div className="text-[#20215A] font-bold mr-1">
-                            {window.location.origin}/buy/{getUserName()}/
+                            {window.location.origin}/buy/username/
                         </div>
                         <TextInput
                             placeholder={"slug"}
