@@ -43,7 +43,10 @@ export default function ProductCreate() {
 
     const getUserName = () => {
         const user = JSON.parse(localStorage.getItem("user"));
-        return user.username;
+        if(user){
+            return user.username;
+        }
+        return "username";
     }
 
     const addProduct = () => {
