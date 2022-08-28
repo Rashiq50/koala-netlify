@@ -14,7 +14,9 @@ const Sidebar = () => {
                 <NavLink to="/" className='font-semibold mt-8 text-gray-500 text-lg flex items-center'><BsFillLightningChargeFill /> <small className='ml-2'>Get Started</small></NavLink>
                 <div>
                     <h5 className='uppercase text-sm mt-3  text-gray-500'>overview</h5>
-                    <p className='font-semibold text-sm mt-2 hover:text-primary cursor-pointer text-gray-500 flex justify-start items-center'><TiHome /> <span className='ml-2'>Home</span></p>
+                    <Link to={'dashboard'} >
+                        <p className='font-semibold text-sm mt-2 hover:text-primary cursor-pointer text-gray-500 flex justify-start items-center'><TiHome /> <span className='ml-2'>Home</span></p>
+                    </Link>
                     <p className='font-semibold text-sm mt-4 hover:text-primary cursor-pointer text-gray-500 flex justify-start items-center'><MdManageAccounts /> <span className='ml-2'>My Profile</span></p>
                 </div>
                 <div>

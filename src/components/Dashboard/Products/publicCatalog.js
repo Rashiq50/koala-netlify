@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { GlobalContext } from '../../../Context/GlobalContext';
 import { TbArrowDownRight } from "react-icons/tb";
 import { useNavigate } from 'react-router-dom';
+import AvatarPlaceHolder from '../../Common/AvataPlaceHolder';
 
 export default function PublicCatalog() {
     const [state, setState] = useContext(GlobalContext);
@@ -26,15 +27,9 @@ export default function PublicCatalog() {
 
     return (
         <div className='w-full text-center p-10'>
-            <div className="avatar placeholder">
-                <div className="bg-primary text-neutral-content font-semibold rounded-full w-28">
-                    {user &&
-                        <span className='text-4xl'>
-                            {`${user?.name.split(' ')[0][0].toUpperCase()}${user?.name.split(' ')[1][0].toUpperCase()}`}
-                        </span>
-                    }
-                </div>
-            </div>
+            {user && 
+                <AvatarPlaceHolder user={user} />
+            }
             <div className='text-4xl mt-4 mb-2 font-bold capitalize'>
                 {user?.name}
             </div>

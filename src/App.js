@@ -17,6 +17,7 @@ import ProtectedRoute from './components/protectedRoutes';
 import { useContext, useState } from 'react';
 import ProductDetails from './components/Dashboard/Products/productDetails';
 import ProductEdit from './components/Dashboard/Products/productEdit';
+import DashboardHome from './components/Dashboard/DashboardHome';
 
 function App() {
 
@@ -33,6 +34,7 @@ function App() {
           </ProtectedRoute>
         }>
           <Route index element={<MainContent />} />
+          <Route path='dashboard' element={<DashboardHome />} />
           <Route path='product-pages' element={<ProductsPage />} />
           <Route path='product-pages/create' element={<ProductCreate />} />
           <Route path='product-pages/:id' element={<ProductDetails />} />
