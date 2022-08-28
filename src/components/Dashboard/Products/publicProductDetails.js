@@ -22,12 +22,12 @@ export default function PublicProductDetail() {
                 </div>
             </div>
             <div className='col-span-1 flex items-center justify-start px-10'>
-                <div className='flex flex-col gap-4'>
+                <div className='flex flex-col gap-4 w-2/3'>
                     <div className='text-5xl'> {product?.name} </div>
                     <div className='text-xl'> By {product?.user.name} </div>
                     <div className='text-2xl'> NGN {product?.price} </div>
 
-                    <div className='text-lg'>{product?.description} </div>
+                    <div className='text-lg' dangerouslySetInnerHTML={{__html: product?.description}}></div>
 
                     <div className='mt-10'>
                         <PrimaryButton text='Buy Now' />

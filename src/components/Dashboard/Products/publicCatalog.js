@@ -1,31 +1,51 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { GlobalContext } from '../../../Context/GlobalContext';
 import { TbArrowDownRight } from "react-icons/tb";
 import { useNavigate } from 'react-router-dom';
 
 export default function PublicCatalog() {
     const [state, setState] = useContext(GlobalContext);
+    const [products, setProducts] = useState([]);
+    const [user, setUser] = useState([]);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if(state.products){
+            setProducts(getProductsByUserName());
+        }
+    }, [])
+
+    const getProductsByUserName = () => {
+        const splittedPath = window.location.pathname.split('/');
+        const username = splittedPath[splittedPath.length - 1];
+        // const user = 
+        const productList = state.products.filter(el => el.user.username === username);
+        setUser(productList[0].user);
+        return productList;
+    }
+
     return (
         <div className='w-full text-center p-10'>
             <div className="avatar placeholder">
                 <div className="bg-primary text-neutral-content font-semibold rounded-full w-28">
-                    <span className='text-4xl'>
-                        {`${state.user?.name.split(' ')[0][0].toUpperCase()}${state.user?.name.split(' ')[1][0].toUpperCase()}`}
-                    </span>
+                    {user &&
+                        <span className='text-4xl'>
+                            {`${user?.name.split(' ')[0][0].toUpperCase()}${user?.name.split(' ')[1][0].toUpperCase()}`}
+                        </span>
+                    }
                 </div>
             </div>
             <div className='text-4xl mt-4 mb-2 font-bold capitalize'>
-                {state.user?.name}
+                {user?.name}
             </div>
             <div className='text-3xl font-semibold'>
-                @{state.user?.username}
+                @{user?.username}
             </div>
 
             <div className='w-2/3 mx-auto mt-10'>
                 <div className="grid grid-cols-4">
-                    {state?.products?.map((product) => (
-                        <div onClick={() => navigate(`${product.id}`)} className="col-span-1 p-4 max-w-[350px] cursor-pointer">
+                    {products?.map((product) => (
+                        <div onClick={() => navigate(`${product.slug}`)} className="col-span-1 p-4 max-w-[350px] cursor-pointer">
                             <div className="shadow-lg rounded-[12px] px-8 py-6">
                                 <div className="rounded overflow-hidden w-2/3 mx-auto ">
                                     <img className="w-[160px] h-[180px]" src={product.coverImage} />

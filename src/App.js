@@ -16,6 +16,7 @@ import PublicProductDetail from './components/Dashboard/Products/publicProductDe
 import ProtectedRoute from './components/protectedRoutes';
 import { useContext, useState } from 'react';
 import ProductDetails from './components/Dashboard/Products/productDetails';
+import ProductEdit from './components/Dashboard/Products/productEdit';
 
 function App() {
 
@@ -35,6 +36,7 @@ function App() {
           <Route path='product-pages' element={<ProductsPage />} />
           <Route path='product-pages/create' element={<ProductCreate />} />
           <Route path='product-pages/:id' element={<ProductDetails />} />
+          <Route path='product-pages/:id/edit' element={<ProductEdit />} />
 
           <Route path='invoice/createInvoice' element={<CreateInvoice />} />
           <Route path='invoice' element={<Invoice />} />

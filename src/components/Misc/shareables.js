@@ -39,11 +39,13 @@ export default function ShareAbles({ type = "hr", product, user }) {
                     Embed
                 </button>
             }
-
-            <button className={`flex justify-center gap-2 items-center p-3 text-gray-500 font-semibold text-xl ${type === 'vr' && "hover:bg-gray-200 w-full"}`} >
-                <MdModeEditOutline />
-                Edit
-            </button>
+            
+            <Link className="w-full" to={`${product.id}/edit`}>
+                <button className={`flex justify-center gap-2 items-center p-3 text-gray-500 font-semibold text-xl ${type === 'vr' && "hover:bg-gray-200 w-full"}`} >
+                    <MdModeEditOutline />
+                    Edit
+                </button>
+            </Link>
             <button onClick={() => { setModalType(4); setShowModal(true) }} className={`flex justify-center gap-2 items-center p-3 text-red-500 font-semibold text-xl ${type === 'vr' && "hover:bg-gray-200 w-full"}`} >
                 <MdOutlineDelete />
                 Delete

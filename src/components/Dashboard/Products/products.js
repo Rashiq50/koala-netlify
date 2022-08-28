@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { BsThreeDots } from "react-icons/bs";
 import { Link, useNavigate } from "react-router-dom";
 import { GlobalContext } from "../../../Context/GlobalContext";
@@ -10,6 +10,7 @@ import { HiOutlineExternalLink } from "react-icons/hi";
 export default function ProductsPage() {
 
     const [state, setState] = useContext(GlobalContext);
+    const [products, setProducts] = useState([]);
 
     const navigate = useNavigate();
 
@@ -24,6 +25,17 @@ export default function ProductsPage() {
         if (menu && !menu.classList.contains('hidden')) {
             menu.classList.add('hidden');
         }
+    }
+
+    useEffect(() => {
+        if(state.products){
+            setProducts(getProductsByUserName());
+        }
+    }, [])
+
+    const getProductsByUserName = () => {
+        const productList = state.products.filter(el => el.user.username === state.user.username);
+        return productList;
     }
     return (
         <div className="container mx-auto py-10">
@@ -40,7 +52,7 @@ export default function ProductsPage() {
             </div>
 
             <div className="grid grid-cols-5">
-                {state?.products?.map((product) => (
+                {products?.map((product) => (
                     <div key={product.id} className="col-span-1 p-4">
                         <div onClick={() => navigate(`${product.id}`)} className="shadow-lg rounded-[12px] px-8 py-6 cursor-pointer">
                             <div className="rounded overflow-hidden w-2/3 mx-auto ">
