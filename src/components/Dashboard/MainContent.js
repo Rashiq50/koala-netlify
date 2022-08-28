@@ -1,15 +1,17 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { TbNumber1, TbNumber2 } from 'react-icons/tb';
+import { GlobalContext } from '../../Context/GlobalContext';
 import PrimaryButton from '../Common/PrimaryButton';
 import Modal from './Modal';
 import Navbar from './Navbar';
 
 const MainContent = () => {
     const [openPopup, setOpenPopup] = useState(false);
+    const [state, setState] = useContext(GlobalContext);
     return (
         <div className='px-16'>
             <div className='text-center mt-8'>
-                <h1 className='text-2xl font-semibold text-gray-600 mb-2'>Welcome, Imran!</h1>
+                <h1 className='text-2xl font-semibold text-gray-600 mb-2'>Welcome, {state.user.name}!</h1>
                 <p className='text-gray-500 font-semibold'>Finish these steps below to setup and verify your account.</p>
             </div>
             <Modal />

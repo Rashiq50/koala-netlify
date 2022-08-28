@@ -1,9 +1,11 @@
 import React, { useContext } from 'react';
 import { GlobalContext } from '../../../Context/GlobalContext';
-import { BsThreeDots } from "react-icons/bs";
+import { TbArrowDownRight } from "react-icons/tb";
+import { useNavigate } from 'react-router-dom';
 
 export default function PublicCatalog() {
     const [state, setState] = useContext(GlobalContext);
+    const navigate = useNavigate();
     return (
         <div className='w-full text-center p-10'>
             <div className="avatar placeholder">
@@ -23,7 +25,7 @@ export default function PublicCatalog() {
             <div className='w-2/3 mx-auto mt-10'>
                 <div className="grid grid-cols-4">
                     {state?.products?.map((product) => (
-                        <div className="col-span-1 p-4 max-w-[350px]">
+                        <div onClick={() => navigate(`${product.id}`)} className="col-span-1 p-4 max-w-[350px] cursor-pointer">
                             <div className="shadow-lg rounded-[12px] px-8 py-6">
                                 <div className="rounded overflow-hidden w-2/3 mx-auto ">
                                     <img className="w-[160px] h-[180px]" src={product.coverImage} />
@@ -35,7 +37,7 @@ export default function PublicCatalog() {
                                         <h3 className="text-lg font-semibold text-gray-500" > {product.price} NGN </h3>
                                     </div>
                                     <div>
-                                        <button> <BsThreeDots fontSize={'24px'} fontWeight={'bolder'} /> </button>
+                                        <button> <TbArrowDownRight fontSize={'24px'} fontWeight={'bolder'} /> </button>
                                     </div>
                                 </div>
                             </div>

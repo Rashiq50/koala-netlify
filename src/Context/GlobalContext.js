@@ -6,14 +6,28 @@ export const GlobalProvider = (props) => {
 
     const initialState = {
         loggedIn: false,
-        user: JSON.parse(localStorage.getItem('user')) || {name:"Rashiq Rahman", username:"rashiq50"},
+        user: JSON.parse(localStorage.getItem('user')) || null,
         products: [
             {
                 id:1,
                 name: "Product on state",
                 price: 200.00,
                 description: "Description here",
-                coverImage: "https://picsum.photos/200/300?random=1"
+                coverImage: "https://picsum.photos/200/300?random=1",
+                isFree: false,
+                type: 'url',
+                redirectUrl: "https://www.google.com",
+                files: [],
+                coverImageFile: null,
+                slug: "state-product",
+                earning: 0.00,
+                pageView: 0,
+                sales: 0,
+                user:{
+                    name:"Rashiq Rahman",
+                    username:"rashiq50",
+                    id:1,
+                }
             },
         ]
     }

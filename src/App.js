@@ -10,32 +10,42 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ProductsPage from './components/Dashboard/Products/products';
 import ProductCreate from './components/Dashboard/Products/create';
-import { GlobalProvider } from './Context/GlobalContext';
+import { GlobalContext, GlobalProvider } from './Context/GlobalContext';
 import PublicCatalog from './components/Dashboard/Products/publicCatalog';
 import PublicProductDetail from './components/Dashboard/Products/publicProductDetails';
+import ProtectedRoute from './components/protectedRoutes';
+import { useContext, useState } from 'react';
+import ProductDetails from './components/Dashboard/Products/productDetails';
 
 function App() {
 
+  const [user, setUser] = useState(null);
+  const [state, setState] = useContext(GlobalContext);
+
   return (
     <div>
-      <GlobalProvider>
-        <Routes>
-          <Route path='/' element={<Dashboard />}>
-            <Route index element={<MainContent />} />
-            <Route path='product-pages' element={<ProductsPage />} />
-            <Route path='product-pages/create' element={<ProductCreate />} />
+      <Routes>
 
+        <Route path='/' element={
+          <ProtectedRoute user={state.loggedIn}>
+            <Dashboard />
+          </ProtectedRoute>
+        }>
+          <Route index element={<MainContent />} />
+          <Route path='product-pages' element={<ProductsPage />} />
+          <Route path='product-pages/create' element={<ProductCreate />} />
+          <Route path='product-pages/:id' element={<ProductDetails />} />
 
-            <Route path='invoice/createInvoice' element={<CreateInvoice />} />
-            <Route path='invoice' element={<Invoice />} />
-          </Route>
-          <Route path='login' element={<Login />} />
-          <Route path='signup' element={<SignUp />} />
-          <Route path='buy/:username' element={<PublicCatalog />} />
-          <Route path='buy/:username/:slug' element={<PublicProductDetail />} />
-        </Routes>
-        <ToastContainer />
-      </GlobalProvider>
+          <Route path='invoice/createInvoice' element={<CreateInvoice />} />
+          <Route path='invoice' element={<Invoice />} />
+        </Route>
+
+        <Route path='login' element={<Login />} />
+        <Route path='signup' element={<SignUp />} />
+        <Route path='buy/:username' element={<PublicCatalog />} />
+        <Route path='buy/:username/:slug' element={<PublicProductDetail />} />
+      </Routes>
+      <ToastContainer />
     </div>
   );
 }

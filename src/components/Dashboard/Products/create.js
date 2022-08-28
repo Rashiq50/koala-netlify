@@ -17,6 +17,7 @@ export default function ProductCreate() {
 
     const [globalState, setGlobalState] = useContext(GlobalContext);
     const initialProductState = {
+        id: globalState.products.length + 1,
         name: "",
         description: "",
         price: "",
@@ -27,6 +28,10 @@ export default function ProductCreate() {
         coverImage: `https://picsum.photos/200/300?random=${globalState.products.length + 1}`,
         coverImageFile: null,
         slug: "",
+        earning: 0,
+        pageView: 0,
+        sales: 0,
+        user:globalState.user,
     }
 
     const [product, setProduct] = useState(initialProductState);
@@ -43,7 +48,7 @@ export default function ProductCreate() {
 
     const getUserName = () => {
         const user = JSON.parse(localStorage.getItem("user"));
-        if(user){
+        if (user) {
             return user.username;
         }
         return "username";
@@ -138,14 +143,14 @@ export default function ProductCreate() {
                                 <IoMdCloudUpload fontSize={48} className="mx-auto" />
                                 <input {...getInputProps()} />
                                 {isDragActive ?
-                                        <p>Drop the files here ...</p> :
-                                        <p className="text-lg">
-                                            <button className="text-[#20215A] font-bold mr-1">
-                                                Click to upload
-                                            </button>
-                                            or drag and drop your product image here <br />
-                                            400x400px image recommended (.png or .jpg). (20MB maximum file size)
-                                        </p>
+                                    <p>Drop the files here ...</p> :
+                                    <p className="text-lg">
+                                        <button className="text-[#20215A] font-bold mr-1">
+                                            Click to upload
+                                        </button>
+                                        or drag and drop your product image here <br />
+                                        400x400px image recommended (.png or .jpg). (20MB maximum file size)
+                                    </p>
                                 }
                             </div>
                         </div>

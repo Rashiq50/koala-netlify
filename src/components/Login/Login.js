@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import LeftSide from './LeftSide';
 import whiteLogo from '../../assets/logo-white.png'
 import axiosWrapper from '../../utils/axiosBase';
 import { toast } from 'react-toastify';
+import { GlobalContext } from '../../Context/GlobalContext';
 
 const Login = () => {
     const { register, reset, formState: { errors }, handleSubmit } = useForm();
+    const [state, setState] = useContext(GlobalContext);
 
     const onSubmit = (data) => {
         axiosWrapper.post(`api/login`, data)
@@ -16,6 +18,7 @@ const Login = () => {
                 if (res.status === 200) {
                     localStorage.setItem("token", res.data.token);
                     localStorage.setItem("user", JSON.stringify(res.data.user));
+                    setState({...state, loggedIn:true, user:res.data.user});
                     setTimeout(()=>{
                         reset();
                         window.location.href = "/"
