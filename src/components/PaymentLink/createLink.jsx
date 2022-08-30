@@ -55,8 +55,8 @@ export default function CreateNewLink({closeModal}) {
             <div className="flex flex-col gap-2 mb-6">
                 <label> Amount (NGN) </label>
                 <TextInput
-                    value={linkObject.description}
-                    onValueChange={e => setLinkObject({ ...linkObject, description: e.target.value })}
+                    value={linkObject.amount}
+                    onValueChange={e => setLinkObject({ ...linkObject, amount: e.target.value })}
                     placeholder="How much would you like to receive?"
                 />
             </div>
