@@ -36,8 +36,8 @@ export default function PaymentLinks() {
     const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
-        setPaymentLinks([...state.paymentLinks.filter(el => el.user.id === state.user.id).map((item)=>{return {...item,date:"30/8/2022 at 11:52PM "}})])
-    },[])
+        setPaymentLinks([...state.paymentLinks.filter(el => el.user.id === state.user.id).map((item) => { return { ...item, date: "30/8/2022 at 11:52PM " } })])
+    }, [])
 
 
     const toggleMenu = (id) => {
@@ -117,7 +117,7 @@ export default function PaymentLinks() {
                     </div>
                 }
 
-                {paymentLinks.map((link) => (
+                {paymentLinks.length > 0 &&
                     <div className="w-full">
                         <DataTable
                             columns={columns}
@@ -125,7 +125,6 @@ export default function PaymentLinks() {
                             pagination
                         />
                     </div>
-                ))
                 }
             </div >
 
