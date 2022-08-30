@@ -1,7 +1,6 @@
 import React, { useContext, useState } from "react";
 import { BiCheckCircle, BiFoodMenu, BiSend, BiWallet } from "react-icons/bi";
 import { BsArrowClockwise } from "react-icons/bs";
-import { TbClipboardText } from "react-icons/tb";
 import { GlobalContext } from "../../Context/GlobalContext";
 import AvatarPlaceHolder from "../Common/AvataPlaceHolder";
 import PrimaryButton from "../Common/PrimaryButton";
@@ -12,6 +11,7 @@ import { customStyles } from "../../utils/customModalStyle";
 import { MdKeyboardArrowRight, MdPayment } from "react-icons/md";
 import { RiShoppingBag3Fill } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
+import NoContent from "../Common/noContent";
 
 export default function DashboardHome() {
     const [state, setState] = useContext(GlobalContext);
@@ -81,19 +81,10 @@ export default function DashboardHome() {
             <div className="mt-10">
                 <div className="text-xl my-2 text-gray-600 font-semibold"> Recent Transactions </div>
 
-                <div className="flex justify-center items-center pt-10">
-                    <div className="text-center w-1/3">
-                        <button className="">
-                            <TbClipboardText fontSize={"5rem"} />
-                        </button>
-                        <div className="text-xl font-semibold mb-2">
-                            Your transaction history is currently empty!
-                        </div>
-                        <div className="text-lg">
-                            Once transactions occurs, the history will start showing here.
-                        </div>
-                    </div>
-                </div>
+                <NoContent
+                    topText={"Your transaction history is currently empty!"}
+                    bottomText={"Once transactions occurs, the history will start showing here."}
+                />
             </div>
 
             <Modal

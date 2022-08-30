@@ -5,9 +5,9 @@ import { MdOutlineArrowBack } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { GlobalContext } from "../../../Context/GlobalContext";
 import { FaGlobe } from "react-icons/fa";
-import { TbClipboardText } from "react-icons/tb";
 import { HiOutlineExternalLink } from "react-icons/hi";
 import ShareAbles from "../../Misc/shareables";
+import NoContent from "../../Common/noContent";
 
 export default function ProductDetails() {
 
@@ -80,19 +80,10 @@ export default function ProductDetails() {
                 <div className="mt-10">
                     <div className="text-xl my-2 text-gray-600 font-semibold"> Sales </div>
 
-                    <div className="flex justify-center items-center pt-10">
-                        <div className="text-center w-1/3">
-                            <button className="">
-                                <TbClipboardText fontSize={"5rem"} />
-                            </button>
-                            <div className="text-xl font-semibold mb-2">
-                                No one has bought this product yet!
-                            </div>
-                            <div className="text-lg">
-                                When someone purchases your product, the sales record will start showing here.
-                            </div>
-                        </div>
-                    </div>
+                    <NoContent
+                        topText={"No one has bought this product yet!"}
+                        bottomText={"When someone purchases your product, the sales record will start showing here."}
+                    />
                 </div>
             </div>
         </div>

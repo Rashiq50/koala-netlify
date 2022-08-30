@@ -18,6 +18,7 @@ import { useContext, useState } from 'react';
 import ProductDetails from './components/Dashboard/Products/productDetails';
 import ProductEdit from './components/Dashboard/Products/productEdit';
 import DashboardHome from './components/Dashboard/DashboardHome';
+import PaymentLinks from './components/Dashboard/PaymentLinks/paymentLinks';
 
 function App() {
 
@@ -39,6 +40,8 @@ function App() {
           <Route path='product-pages/create' element={<ProductCreate />} />
           <Route path='product-pages/:id' element={<ProductDetails />} />
           <Route path='product-pages/:id/edit' element={<ProductEdit />} />
+
+          <Route path='payment-links' element={<PaymentLinks />} />
 
           <Route path='invoice/createInvoice' element={<CreateInvoice />} />
           <Route path='invoice' element={<Invoice />} />

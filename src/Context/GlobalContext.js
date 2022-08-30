@@ -29,6 +29,20 @@ export const GlobalProvider = (props) => {
                     id:1,
                 }
             },
+        ],
+        paymentLinks:[
+            {
+                title:"test title",
+                buy:"",
+                description:"",
+                amount:200.00,
+                link:"",
+                user:{
+                    name:"Rashiq Rahman",
+                    username:"rashiq50",
+                    id:1,
+                }
+            }
         ]
     }
 
