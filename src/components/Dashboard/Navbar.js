@@ -17,9 +17,8 @@ const Navbar = () => {
     }, [])
 
     const LogOut = () => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
         setState({...state, loggedIn:false, user:null});
+        localStorage.clear();
         window.location.reload();
     }
     return (

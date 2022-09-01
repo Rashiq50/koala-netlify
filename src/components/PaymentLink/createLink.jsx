@@ -13,19 +13,18 @@ export default function CreateNewLink({closeModal}) {
         amount: 0.00,
         link: "",
         user: state.user,
+        date: new Date(),
         id: Math.floor(Math.random() * (9999 - 1000) + 1000)
     }
     const [linkObject, setLinkObject] = useState(initialState);
     const [finishModalOpen, setFinishModal] = React.useState(false);
 
     const AddNewLink = () => {
-        setState({ ...state, "paymentLinks": [...state.paymentLinks, linkObject] });
+        setState({ ...state, "paymentLinks": [...state.paymentLinks, {...linkObject,date: new Date()}] });
         setFinishModal(true);
         closeModal();
         setLinkObject({ ...initialState });
     }
-
-    console.log(state);
 
     return (
         <div>

@@ -16,7 +16,8 @@ export default function ShareAbles({ type = "hr", item, user, shareLink, itemLin
     const [modalType, setModalType] = useState(1);
 
     const showCopySuccessToast = () => {
-        toast("Link has been copied to clipboard")
+        navigator.clipboard.writeText(shareLink);
+        toast("Link has been copied to clipboard");
     }
     return (
         <div className={`flex items-center gap-x-4 ${type === "vr" && "flex-col"}`}>

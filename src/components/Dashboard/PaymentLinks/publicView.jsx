@@ -6,7 +6,9 @@ import PrimaryButton from "../../Common/PrimaryButton";
 export default function PublicView() {
     const [link, setLink] = useState();
     const [amount, setAmount] = useState(1);
+    const [customAmount, setCustomAmount] = useState(false);
     const [price, setPrice] = useState(200);
+    const [total, setTotal] = useState(200);
     const [type, setType] = useState("single");
 
     const [state, setState] = useContext(GlobalContext);
@@ -14,12 +16,28 @@ export default function PublicView() {
     useEffect(() => {
         const splittedPath = window.location.pathname.split('/');
         const linkSlug = splittedPath[splittedPath.length - 1];
-        const linkIndex = state.paymentLinks.findIndex(el => el.link == linkSlug);
+        const linkIndex = state.paymentLinks.findIndex(el => el.link === linkSlug);
         setLink(state.paymentLinks[linkIndex]);
         setPrice(state.paymentLinks[linkIndex].amount);
         console.log(state.paymentLinks[linkIndex]);
     }, [])
     // router = useRo
+
+    const handleCustomAmount = (e) => {
+        e.target.checked &&
+        setPrice("");
+
+        !e.target.checked&&
+        setPrice(link.amount)
+        
+        setCustomAmount(!customAmount);
+    }
+
+    useEffect(() => {
+        const total = parseInt(amount) * parseInt(price);
+        setTotal(total);
+    }, [amount, price])
+
     return (
         <div className="h-screen w-screen">
             <div className="h-[40vh] bg-blue-50 flex relative justify-center">
@@ -64,10 +82,35 @@ export default function PublicView() {
                     </div>
 
                     <div>
-
+                        <div className="my-2">
+                            <div>Name</div>
+                            <input className="border-0 outline-none w-full bg-gray-50 p-3 h-14" placeholder="John Doe" />
+                        </div>
+                        <div className="my-2">
+                            <div>Email</div>
+                            <input className="border-0 outline-none w-full bg-gray-50 p-3 h-14" placeholder="john@email.com" />
+                        </div>
+                        <div className="my-2">
+                            <div>Message</div>
+                            <textarea rows="3" className="border-0 outline-none w-full bg-gray-50 p-3" placeholder="Leave some kind words" />
+                        </div>
+                        <div className="my-2">
+                            <label className="cursor-pointer">
+                                <input checked={customAmount} onChange={handleCustomAmount} type="checkbox" className="mr-2" />
+                                Enter Custom Amount
+                            </label>
+                        </div>
+                        {customAmount &&
+                            <div className="my-2">
+                                <input
+                                    value={price}
+                                    onChange={e => { !isNaN(e.target.value) && setPrice(e.target.value) }}
+                                    className="border-0 outline-none w-full bg-gray-50 p-3 h-14" placeholder={`How much would you like to pay?`} />
+                            </div>
+                        }
                     </div>
                     <div>
-                        <PrimaryButton text={`Support - NGN ${price} ${type === 'monthly' ? "/ Month" : ""}`} />
+                        <PrimaryButton text={`Support - NGN ${total || ""} ${type === 'monthly' ? "/ Month" : ""}`} />
                     </div>
                 </div>
             </div>
