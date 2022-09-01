@@ -7,8 +7,10 @@ import Modal from 'react-modal';
 import { IoMdClose } from "react-icons/io";
 import CreateNewLink from "../../PaymentLink/createLink";
 import DataTable from 'react-data-table-component';
-import { BsThreeDots } from "react-icons/bs";
+import { BsArrowBarRight, BsThreeDots } from "react-icons/bs";
 import ShareAbles from "../../Misc/shareables";
+import { MdArrowBackIos, MdArrowForwardIos } from "react-icons/md";
+import ReactOutSideClickHandler from 'react-outside-click-handler';
 
 export const customStyles = {
     content: {
@@ -37,7 +39,7 @@ export default function PaymentLinks() {
 
     useEffect(() => {
         setPaymentLinks([...state.paymentLinks.filter(el => el.user.id === state.user.id).map((item) => { return { ...item, date: "30/8/2022 at 11:52PM " } })])
-    }, [])
+    }, [state])
 
 
     const toggleMenu = (id) => {
@@ -46,8 +48,8 @@ export default function PaymentLinks() {
             menu.classList.toggle('hidden');
         }
     }
-    const hideMenu = () => {
-        const menu = document.getElementById('ddMenu');
+    const hideMenu = (id) => {
+        const menu = document.getElementById(id);
         if (menu && !menu.classList.contains('hidden')) {
             menu.classList.add('hidden');
         }
@@ -80,7 +82,7 @@ export default function PaymentLinks() {
             cell: (row) =>
                 <div className="relative">
                     <button onClick={() => { toggleMenu(`ddMenu${row.id}`); }} > <BsThreeDots fontSize={'24px'} fontWeight={'bolder'} /> </button>
-                    <div id={`ddMenu${row.id}`} onClick={e => { toggleMenu(`ddMenu${row.id}`) }} className="z-50 origin-top-right hidden absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabIndex="-1">
+                    <div id={`ddMenu${row.id}`} onClick={e => { toggleMenu(`ddMenu${row.id}`) }} className="z-[5000] origin-top-right hidden absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabIndex="-1">
                         <div className="py-1" role="none">
                             <ShareAbles type="vr" product={row} user={row.user} />
                         </div>
@@ -119,11 +121,54 @@ export default function PaymentLinks() {
 
                 {paymentLinks.length > 0 &&
                     <div className="w-full">
-                        <DataTable
+                        {/* <DataTable
                             columns={columns}
                             data={[...paymentLinks]}
                             pagination
-                        />
+                        /> */}
+                        <table className="table-fixed w-full">
+                            <thead>
+                                <tr className="text-xl text-left py-2 border-b">
+                                    <th className="py-3">Page Title</th>
+                                    <th className="py-3">Type</th>
+                                    <th className="py-3">Amount</th>
+                                    <th className="py-3">Date Paid</th>
+                                    <th className="py-3"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {paymentLinks.map((item) => (
+                                    <tr key={item.id} className="border-b">
+                                        <td className="py-3"> {item.title} </td>
+                                        <td className="py-3"> {item.buy} </td>
+                                        <td className="py-3"> {item.amount} </td>
+                                        <td className="py-3 "> {item.date} </td>
+                                        <td className="py-3 text-left w-[100px] ">
+                                            <ReactOutSideClickHandler onOutsideClick={()=>{hideMenu(`ddMenu${item.id}`)}} >
+                                                <div className="relative">
+                                                    <button onClick={() => { toggleMenu(`ddMenu${item.id}`); }} > <BsThreeDots fontSize={'24px'} fontWeight={'bolder'} /> </button>
+                                                    <div id={`ddMenu${item.id}`} onClick={e => { toggleMenu(`ddMenu${item.id}`) }} className="z-[5000] origin-top-left hidden absolute left-0  top-4 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabIndex="-1">
+                                                        <div className="py-1" role="none">
+                                                            <ShareAbles type="vr" shareLink={`${window.location.origin}/pay/${item.user.username}/${item.link}`} itemType="link" item={item} user={item.user} />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </ReactOutSideClickHandler>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                        <div className="flex justify-end gap-x-6 py-2 text-gray-400">
+                            <div>
+                                Rows per page : 10 
+                            </div>
+                            <div>1 - 2 of 2</div>
+                            <div>
+                                <button> <MdArrowBackIos/> </button>
+                                <button className="ml-3"> <MdArrowForwardIos/> </button>
+                            </div>
+                        </div>
                     </div>
                 }
             </div >

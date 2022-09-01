@@ -13,6 +13,7 @@ export default function CreateNewLink({closeModal}) {
         amount: 0.00,
         link: "",
         user: state.user,
+        id: Math.floor(Math.random() * (9999 - 1000) + 1000)
     }
     const [linkObject, setLinkObject] = useState(initialState);
     const [finishModalOpen, setFinishModal] = React.useState(false);

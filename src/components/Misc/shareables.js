@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { AiFillFacebook, AiFillLinkedin, AiOutlineShareAlt, AiOutlineTwitter } from "react-icons/ai";
+import { AiFillEyeInvisible, AiFillFacebook, AiFillLinkedin, AiOutlineShareAlt, AiOutlineTwitter } from "react-icons/ai";
 import { BsEyeFill } from "react-icons/bs";
 import { ImEmbed2 } from "react-icons/im";
 import { MdModeEditOutline, MdOutlineDelete } from "react-icons/md";
@@ -11,7 +11,7 @@ import { toast } from 'react-toastify';
 import PrimaryButton from "../Common/PrimaryButton";
 import { Link } from "react-router-dom";
 
-export default function ShareAbles({ type = "hr", product, user }) {
+export default function ShareAbles({ type = "hr", item, user, shareLink, itemLink, itemType = "product" }) {
     const [showModal, setShowModal] = useState(false);
     const [modalType, setModalType] = useState(1);
 
@@ -21,35 +21,55 @@ export default function ShareAbles({ type = "hr", product, user }) {
     return (
         <div className={`flex items-center gap-x-4 ${type === "vr" && "flex-col"}`}>
             {type === 'vr' &&
-                <a target={"_"} href={`${window.location.origin}/buy/${user?.username}/${product?.slug}`} className="w-full">
-                    <button className={`flex justify-center gap-2 items-center p-3 text-gray-500 font-semibold text-xl ${type === 'vr' && "hover:bg-gray-200 w-full"}`} >
+                <a target={"_"} href={itemLink} className="w-full">
+                    <button className={`flex items-center gap-2 ${itemType === "link" && "justify-start pl-5 py-2 border-b"} ${itemType === "product" && "justify-center p-3"} text-gray-500 font-semibold text-xl ${type === 'vr' && "hover:bg-gray-200 w-full"}`} >
                         <BsEyeFill />
-                        View
+                        View {itemType === 'link' && "link"}
                     </button>
                 </a>
             }
-            <button onClick={() => { setModalType(1); setShowModal(true) }} className={`flex justify-center gap-2 items-center p-3 text-gray-500 font-semibold text-xl ${type === 'vr' && "hover:bg-gray-200 w-full"}`} >
+            <button onClick={() => { setModalType(1); setShowModal(true) }} className={`flex items-center gap-2 ${itemType === "link" && "justify-start pl-5 py-2 border-b"} ${itemType === "product" && "justify-center p-3"} text-gray-500 font-semibold text-xl ${type === 'vr' && "hover:bg-gray-200 w-full"}`} >
                 <AiOutlineShareAlt />
-                Share
+                Share {itemType === 'link' && "link"}
             </button>
 
-            {type === 'hr' &&
-                <button onClick={() => { setModalType(2); setShowModal(true) }} className={`flex justify-center gap-2 items-center p-3 text-gray-500 font-semibold text-xl ${type === 'vr' && "hover:bg-gray-200 w-full"}`} >
+            {itemType === 'link'  &&
+                <button
+                    onClick={() => showCopySuccessToast()}
+                    className="flex items-center gap-2 justify-start pl-5 py-2 border-b text-gray-500 font-semibold text-xl hover:bg-gray-200 w-full">
+                    <IoCopySharp />
+                    Copy {itemType === 'link' && "link"}
+                </button>
+            }
+            {itemType === 'link'  &&
+                <button
+                    onClick={() => showCopySuccessToast()}
+                    className="flex items-center gap-2 justify-start pl-5 py-2 border-b text-gray-500 font-semibold text-xl hover:bg-gray-200 w-full">
+                    <AiFillEyeInvisible />
+                    Disable {itemType === 'link' && "link"}
+                </button>
+            }
+
+            {(type === 'hr' && itemType === 'product') &&
+                <button onClick={() => { setModalType(2); setShowModal(true) }} className={`flex items-center gap-2 ${itemType === "link" && "justify-start pl-5 py-2 border-b"} ${itemType === "product" && "justify-center p-3"} text-gray-500 font-semibold text-xl ${type === 'vr' && "hover:bg-gray-200 w-full"}`} >
                     <ImEmbed2 />
                     Embed
                 </button>
             }
-            
-            <Link className="w-full" to={`${product.id}/edit`}>
-                <button className={`flex justify-center gap-2 items-center p-3 text-gray-500 font-semibold text-xl ${type === 'vr' && "hover:bg-gray-200 w-full"}`} >
+
+            <Link className="w-full" to={`${item.id}/edit`}>
+                <button className={`flex items-center gap-2 ${itemType === "link" && "justify-start pl-5 py-2 border-b"} ${itemType === "product" && "justify-center p-3"} text-gray-500 font-semibold text-xl ${type === 'vr' && "hover:bg-gray-200 w-full"}`} >
                     <MdModeEditOutline />
-                    Edit
+                    Edit {itemType === 'link' && "link"}
                 </button>
             </Link>
-            <button onClick={() => { setModalType(4); setShowModal(true) }} className={`flex justify-center gap-2 items-center p-3 text-red-500 font-semibold text-xl ${type === 'vr' && "hover:bg-gray-200 w-full"}`} >
+
+            <button onClick={() => { setModalType(4); setShowModal(true) }} className={`flex items-center gap-2 ${itemType === "link" && "justify-start pl-5 py-2 border-b text-gray-500"} ${itemType === "product" && "justify-center p-3 text-red-500"}  font-semibold text-xl ${type === 'vr' && "hover:bg-gray-200 w-full"}`} >
                 <MdOutlineDelete />
-                Delete
+                Delete {itemType === 'link' && "link"}
             </button>
+
+
 
             <Modal
                 isOpen={showModal}
@@ -58,7 +78,7 @@ export default function ShareAbles({ type = "hr", product, user }) {
             >
                 <div className="p-6 w-[600px]">
                     <div className="flex justify-between items-center w-full mb-2">
-                        <div className="text-3xl font-semibold"> {modalType === 1 && "Share"} {modalType === 2 && "Embed"} {modalType === 4 && "Delete Product"} </div>
+                        <div className="text-3xl font-semibold"> {modalType === 1 && "Share"} {modalType === 2 && "Embed"} {modalType === 4 && "Delete item"} </div>
                         <button onClick={() => { setShowModal(false) }} ><IoMdClose fontSize={"32px"} /></button>
                     </div>
 
@@ -92,7 +112,7 @@ export default function ShareAbles({ type = "hr", product, user }) {
                                     onClick={() => showCopySuccessToast()}
                                     className="flex justify-between items-center text-lg font-semibold w-full p-4">
                                     <div>
-                                        {`${window.location.origin}/buy/${user?.username}/${product?.slug}`}
+                                        {shareLink}
                                     </div>
                                     <IoCopySharp />
                                 </button>
