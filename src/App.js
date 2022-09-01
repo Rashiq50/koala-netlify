@@ -19,6 +19,7 @@ import ProductDetails from './components/Dashboard/Products/productDetails';
 import ProductEdit from './components/Dashboard/Products/productEdit';
 import DashboardHome from './components/Dashboard/DashboardHome';
 import PaymentLinks from './components/Dashboard/PaymentLinks/paymentLinks';
+import PublicView from './components/Dashboard/PaymentLinks/publicView';
 
 function App() {
 
@@ -51,6 +52,7 @@ function App() {
         <Route path='signup' element={<SignUp />} />
         <Route path='buy/:username' element={<PublicCatalog />} />
         <Route path='buy/:username/:slug' element={<PublicProductDetail />} />
+        <Route path='pay/:username/:slug' element={<PublicView />} />
       </Routes>
       <ToastContainer />
     </div>
