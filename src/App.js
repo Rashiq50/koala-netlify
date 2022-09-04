@@ -20,6 +20,7 @@ import ProductEdit from './components/Dashboard/Products/productEdit';
 import DashboardHome from './components/Dashboard/DashboardHome';
 import PaymentLinks from './components/Dashboard/PaymentLinks/paymentLinks';
 import PublicView from './components/Dashboard/PaymentLinks/publicView';
+import LinkDetails from './components/Dashboard/PaymentLinks/linkDetails';
 
 function App() {
 
@@ -43,6 +44,7 @@ function App() {
           <Route path='product-pages/:id/edit' element={<ProductEdit />} />
 
           <Route path='payment-links' element={<PaymentLinks />} />
+          <Route path='payment-links/:slug' element={<LinkDetails />} />
 
           <Route path='invoice/createInvoice' element={<CreateInvoice />} />
           <Route path='invoice' element={<Invoice />} />

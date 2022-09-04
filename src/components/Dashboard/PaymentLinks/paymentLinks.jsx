@@ -11,6 +11,7 @@ import { BsArrowBarRight, BsThreeDots } from "react-icons/bs";
 import ShareAbles from "../../Misc/shareables";
 import { MdArrowBackIos, MdArrowForwardIos } from "react-icons/md";
 import ReactOutSideClickHandler from 'react-outside-click-handler';
+import { Link, useNavigate } from "react-router-dom";
 
 export const customStyles = {
     content: {
@@ -36,6 +37,7 @@ export default function PaymentLinks() {
     const [state, setState] = useContext(GlobalContext);
     const [paymentLinks, setPaymentLinks] = useState([]);
     const [showModal, setShowModal] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         setPaymentLinks([...state.paymentLinks.filter(el => el.user.id === state.user.id).map((item) => { return { ...item, date: "30/8/2022 at 11:52PM " } })])
@@ -138,15 +140,19 @@ export default function PaymentLinks() {
                             </thead>
                             <tbody>
                                 {paymentLinks.map((item) => (
-                                    <tr key={item.id} className="border-b">
+                                    <tr
+                                        onClick={e => navigate(`${item.link}`)}
+                                        key={item.link}
+                                        className="border-b cursor-pointer"
+                                    >
                                         <td className="py-3"> {item.title} </td>
                                         <td className="py-3"> {item.buy} </td>
                                         <td className="py-3"> {item.amount} </td>
                                         <td className="py-3 "> {item.date} </td>
                                         <td className="py-3 text-left w-[100px] ">
-                                            <ReactOutSideClickHandler onOutsideClick={()=>{hideMenu(`ddMenu${item.id}`)}} >
+                                            <ReactOutSideClickHandler onOutsideClick={() => { hideMenu(`ddMenu${item.id}`) }} >
                                                 <div className="relative">
-                                                    <button onClick={() => { toggleMenu(`ddMenu${item.id}`); }} > <BsThreeDots fontSize={'24px'} fontWeight={'bolder'} /> </button>
+                                                    <button onClick={(e) => { e.preventDefault(); toggleMenu(`ddMenu${item.id}`); }} > <BsThreeDots fontSize={'24px'} fontWeight={'bolder'} /> </button>
                                                     <div id={`ddMenu${item.id}`} onClick={e => { toggleMenu(`ddMenu${item.id}`) }} className="z-[5000] origin-top-left hidden absolute left-0  top-4 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabIndex="-1">
                                                         <div className="py-1" role="none">
                                                             <ShareAbles type="vr" shareLink={`${window.location.origin}/pay/${item.user.username}/${item.link}`} itemType="link" item={item} user={item.user} />
@@ -161,12 +167,12 @@ export default function PaymentLinks() {
                         </table>
                         <div className="flex justify-end gap-x-6 py-2 text-gray-400">
                             <div>
-                                Rows per page : 10 
+                                Rows per page : 10
                             </div>
-                            <div>1 - 2 of 2</div>
+                            <div>1 - {paymentLinks.length} of {paymentLinks.length}</div>
                             <div>
-                                <button> <MdArrowBackIos/> </button>
-                                <button className="ml-3"> <MdArrowForwardIos/> </button>
+                                <button> <MdArrowBackIos /> </button>
+                                <button className="ml-3"> <MdArrowForwardIos /> </button>
                             </div>
                         </div>
                     </div>

@@ -38,6 +38,9 @@ export const GlobalProvider = (props) => {
                 description:"",
                 amount:200.00,
                 link:"",
+                earning: 0.00,
+                pageView: 0,
+                sales: 0,
                 user:{
                     name:"Rashiq Rahman",
                     username:"rashiq50",

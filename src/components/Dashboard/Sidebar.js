@@ -6,6 +6,13 @@ import logo from '../../assets/logo-white.png'
 import { Link, NavLink } from "react-router-dom";
 
 const Sidebar = () => {
+    // const router = useRouter
+    const isActive = (name) => {
+        if (window.location.pathname.includes(name)) {
+            return true
+        }
+        return false;
+    }
     return (
         <ul className="menu scrollbar-hide p-4 overscroll-none overflow-y-auto w-72 bg-gray-100 text-base-content">
             {/* <!-- Sidebar content here --> */}
@@ -15,15 +22,21 @@ const Sidebar = () => {
                 <div>
                     <h5 className='uppercase text-sm mt-3  text-gray-500'>overview</h5>
                     <Link to={'dashboard'} >
-                        <p className='font-semibold text-sm mt-2 hover:text-primary cursor-pointer text-gray-500 flex justify-start items-center'><TiHome /> <span className='ml-2'>Home</span></p>
+                        <p className={`font-semibold text-sm mt-2 hover:text-primary cursor-pointer  flex justify-start items-center ${isActive('/dashboard') ? "text-primary":"text-gray-500"} `}>
+                            <TiHome />
+                            <span className='ml-2'>Home</span>
+                        </p>
                     </Link>
-                    <p className='font-semibold text-sm mt-4 hover:text-primary cursor-pointer text-gray-500 flex justify-start items-center'><MdManageAccounts /> <span className='ml-2'>My Profile</span></p>
+                    <p className='font-semibold text-sm mt-4 hover:text-primary cursor-pointer text-gray-500 flex justify-start items-center'>
+                        <MdManageAccounts />
+                        <span className='ml-2'>My Profile</span>
+                    </p>
                 </div>
                 <div>
                     <h5 className='uppercase text-sm mt-4 text-gray-500'>payment</h5>
-                    
+
                     <Link to={'payment-links'}>
-                        <p className='font-semibold text-sm mt-2 hover:text-primary cursor-pointer text-gray-500 flex justify-start items-center'>
+                        <p className={`font-semibold text-sm mt-2 hover:text-primary cursor-pointer flex justify-start items-center ${isActive('payment-links') ? "text-primary":"text-gray-500"} `}>
                             <TiHome />
                             <span className='ml-2'>
                                 Payment Links
@@ -41,7 +54,7 @@ const Sidebar = () => {
                 <div>
                     <h5 className='uppercase text-sm mt-4 text-gray-500'>commerce</h5>
                     <NavLink to={'/product-pages'}>
-                        <p className='font-semibold text-sm mt-2 hover:text-primary cursor-pointer text-gray-500 flex justify-start items-center'>
+                        <p className={`font-semibold text-sm mt-2 hover:text-primary cursor-pointer flex justify-start items-center ${isActive('product-pages') ? "text-primary":"text-gray-500"} `}>
                             <TiHome />
                             <span className='ml-2'>
                                 Product Pages
@@ -50,11 +63,12 @@ const Sidebar = () => {
                     </NavLink>
                     <NavLink
                         to='/invoice'
-                        className='font-semibold text-sm mt-4 hover:text-primary cursor-pointer text-gray-500 flex justify-start items-center'><MdManageAccounts /> <span className='ml-2'>Invoicing</span></NavLink>
+                        className='font-semibold text-sm mt-4 hover:text-primary cursor-pointer text-gray-500 flex justify-start items-center'><MdManageAccounts /> <span className='ml-2'>Invoicing</span>
+                    </NavLink>
                 </div>
                 <div>
                     <h5 className='uppercase text-sm mt-4 text-gray-500'>settings</h5>
-                    <p className='font-semibold text-sm mt-2 hover:text-primary cursor-pointer text-gray-500 flex justify-start items-center'><TiHome /> <span className='ml-2'>Payouts</span></p>
+                    <p className={`font-semibold text-sm mt-2 hover:text-primary cursor-pointer text-gray-500 flex justify-start items-center ${isActive('payouts') ? "text-primary":"text-gray-500"} `}><TiHome /> <span className='ml-2'>Payouts</span></p>
                     <p className='font-semibold text-sm mt-4 hover:text-primary cursor-pointer text-gray-500 flex justify-start items-center'><MdManageAccounts /> <span className='ml-2'>Integrations</span></p>
                     <p className='font-semibold text-sm mt-4 hover:text-primary cursor-pointer text-gray-500 flex justify-start items-center'><MdManageAccounts /> <span className='ml-2'>Referrals</span></p>
                 </div>
