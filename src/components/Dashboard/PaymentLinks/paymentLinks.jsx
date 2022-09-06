@@ -116,7 +116,7 @@ export default function PaymentLinks() {
                             bottomText={"Create a new payment link to start receiving support from your fans."}
                         />
                         <div className="w-1/3 mx-auto mt-4">
-                            <PrimaryButton onCLickFunction={() => { setShowModal(true) }} text="Create Payment Link" />
+                            <PrimaryButton w="full" onCLickFunction={() => { setShowModal(true) }} text="Create Payment Link" />
                         </div>
                     </div>
                 }

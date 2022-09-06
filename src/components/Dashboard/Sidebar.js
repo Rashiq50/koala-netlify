@@ -43,13 +43,14 @@ const Sidebar = () => {
                             </span>
                         </p>
                     </Link>
-
-                    <p className='font-semibold text-sm mt-4 hover:text-primary cursor-pointer text-gray-500 flex justify-start items-center'>
-                        <MdManageAccounts />
-                        <span className='ml-2'>
-                            Transfer
-                        </span>
-                    </p>
+                    <Link to={'transfers'}>
+                        <p className='font-semibold text-sm mt-4 hover:text-primary cursor-pointer text-gray-500 flex justify-start items-center'>
+                            <MdManageAccounts />
+                            <span className='ml-2'>
+                                Transfer
+                            </span>
+                        </p>
+                    </Link>
                 </div>
                 <div>
                     <h5 className='uppercase text-sm mt-4 text-gray-500'>commerce</h5>

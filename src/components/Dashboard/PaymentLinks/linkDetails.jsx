@@ -42,7 +42,7 @@ export default function LinkDetails() {
                 <div className="my-6">
                     <div className="text-xl my-2 text-gray-600 font-semibold"> Stats </div>
                     <div className="grid xl:grid-cols-3 mt-4">
-                        <div className="col-span-1 p-6">
+                        <div className="col-span-1 p-6 shadow-md rounded">
                             <div className="flex gap-4">
                                 <div className="bg-gray-200 p-2 flex items-center justify-center rounded-[50%]">
                                     <BiPieChart fontSize={"36px"} />
@@ -53,7 +53,7 @@ export default function LinkDetails() {
                                 </div>
                             </div>
                         </div>
-                        <div className="col-span-1 p-6">
+                        <div className="col-span-1 p-6 shadow-md rounded">
                             <div className="flex gap-4">
                                 <div className="bg-gray-200 p-2 flex items-center justify-center rounded-[50%]">
                                     <RiUser5Fill fontSize={"36px"} />
@@ -64,7 +64,7 @@ export default function LinkDetails() {
                                 </div>
                             </div>
                         </div>
-                        <div className="col-span-1 p-6">
+                        <div className="col-span-1 p-6 shadow-md rounded">
                             <div className="flex gap-4">
                                 <div className="bg-gray-200 p-2 flex items-center justify-center rounded-[50%]">
                                     <FaGlobe fontSize={"36px"} />

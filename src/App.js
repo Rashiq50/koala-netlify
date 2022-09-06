@@ -21,6 +21,7 @@ import DashboardHome from './components/Dashboard/DashboardHome';
 import PaymentLinks from './components/Dashboard/PaymentLinks/paymentLinks';
 import PublicView from './components/Dashboard/PaymentLinks/publicView';
 import LinkDetails from './components/Dashboard/PaymentLinks/linkDetails';
+import Transfers from './components/Dashboard/Transfer/transfers';
 
 function App() {
 
@@ -46,6 +47,8 @@ function App() {
           <Route path='payment-links' element={<PaymentLinks />} />
           <Route path='payment-links/:slug' element={<LinkDetails />} />
 
+          <Route path='transfers' element={<Transfers />} />
+          
           <Route path='invoice/createInvoice' element={<CreateInvoice />} />
           <Route path='invoice' element={<Invoice />} />
         </Route>

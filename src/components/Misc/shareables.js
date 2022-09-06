@@ -58,7 +58,7 @@ export default function ShareAbles({ type = "hr", item, user, shareLink, itemLin
                 </button>
             }
 
-            <Link className="w-full" to={`${item.id}/edit`}>
+            <Link className="w-full" to={`${type === 'vr' ? item.id+"/edit" : "edit"}`}>
                 <button className={`flex items-center gap-2 ${itemType === "link" && "justify-start pl-5 py-2 border-b"} ${itemType === "product" && "justify-center p-3"} text-gray-500 font-semibold text-xl ${type === 'vr' && "hover:bg-gray-200 w-full"}`} >
                     <MdModeEditOutline />
                     Edit {itemType === 'link' && "link"}
@@ -111,7 +111,7 @@ export default function ShareAbles({ type = "hr", item, user, shareLink, itemLin
                                 </div>
                                 <button
                                     onClick={() => showCopySuccessToast()}
-                                    className="flex justify-between items-center text-lg font-semibold w-full p-4">
+                                    className="flex justify-between items-center text-lg font-semibold w-full p-4 bg-gray-100 rounded mt-2">
                                     <div>
                                         {shareLink}
                                     </div>
@@ -135,7 +135,7 @@ export default function ShareAbles({ type = "hr", item, user, shareLink, itemLin
 
                             <div className="flex justify-end">
                                 <div className="w-[350px]">
-                                    <PrimaryButton text="Copy to clipboard" />
+                                    <PrimaryButton w="full" text="Copy to clipboard" />
                                 </div>
                             </div>
                         </div>
@@ -146,7 +146,7 @@ export default function ShareAbles({ type = "hr", item, user, shareLink, itemLin
                             <div className="text-gray-600 font-normal text-xl my-6 text-center">
                                 Are you sure you want to delete this product?
                             </div>
-                            <PrimaryButton text="Delete" />
+                            <PrimaryButton w="full" text="Delete" />
                         </div>
                     }
                 </div>
