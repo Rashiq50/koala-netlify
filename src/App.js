@@ -22,6 +22,11 @@ import PaymentLinks from './components/Dashboard/PaymentLinks/paymentLinks';
 import PublicView from './components/Dashboard/PaymentLinks/publicView';
 import LinkDetails from './components/Dashboard/PaymentLinks/linkDetails';
 import Transfers from './components/Dashboard/Transfer/transfers';
+import ProfileIndex from './components/Dashboard/Profile/profileIndex';
+import RefIndex from './components/Dashboard/Referrals/Referrals';
+import Integrations from './components/Dashboard/Integrations/Integrations';
+import PayOutIndex from './components/Dashboard/Payouts/PayoutIndex';
+import PublicProfileView from './components/Dashboard/Profile/public';
 
 function App() {
 
@@ -39,6 +44,11 @@ function App() {
         }>
           <Route index element={<MainContent />} />
           <Route path='dashboard' element={<DashboardHome />} />
+          <Route path='profile' element={<ProfileIndex />} />
+          <Route path='referrals' element={<RefIndex />} />
+          <Route path='integrations' element={<Integrations />} />
+          <Route path='payouts' element={<PayOutIndex />} />
+
           <Route path='product-pages' element={<ProductsPage />} />
           <Route path='product-pages/create' element={<ProductCreate />} />
           <Route path='product-pages/:id' element={<ProductDetails />} />
@@ -58,6 +68,8 @@ function App() {
         <Route path='buy/:username' element={<PublicCatalog />} />
         <Route path='buy/:username/:slug' element={<PublicProductDetail />} />
         <Route path='pay/:username/:slug' element={<PublicView />} />
+        
+        <Route path=':username' element={<PublicProfileView />} />
       </Routes>
       <ToastContainer />
     </div>

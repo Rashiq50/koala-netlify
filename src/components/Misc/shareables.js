@@ -6,7 +6,7 @@ import { MdModeEditOutline, MdOutlineDelete } from "react-icons/md";
 import Modal from 'react-modal';
 import { customStyles } from "../../utils/customModalStyle";
 import { IoMdClose, } from "react-icons/io";
-import { IoCopySharp } from "react-icons/io5";
+import { IoCopy, IoCopySharp } from "react-icons/io5";
 import { toast } from 'react-toastify';
 import PrimaryButton from "../Common/PrimaryButton";
 import { Link } from "react-router-dom";
@@ -29,10 +29,27 @@ export default function ShareAbles({ type = "hr", item, user, shareLink, itemLin
                     </button>
                 </a>
             }
+            {itemType === 'profile'  &&
+                <button
+                    onClick={() => showCopySuccessToast()}
+                    className="flex items-center gap-2 justify-start pl-5 py-2 text-gray-500 font-semibold text-xl hover:bg-gray-200 w-full">
+                    <BsEyeFill />
+                    View 
+                </button>
+            }
             <button onClick={() => { setModalType(1); setShowModal(true) }} className={`flex items-center gap-2 ${itemType === "link" && "justify-start pl-5 py-2 border-b"} ${itemType === "product" && "justify-center p-3"} text-gray-500 font-semibold text-xl ${type === 'vr' && "hover:bg-gray-200 w-full"}`} >
                 <AiOutlineShareAlt />
                 Share {itemType === 'link' && "link"}
             </button>
+
+            {itemType === 'profile'  &&
+                <button
+                    onClick={() => showCopySuccessToast()}
+                    className="flex items-center gap-2 justify-start pl-5 py-2 text-gray-500 font-semibold text-xl hover:bg-gray-200 w-full">
+                    <IoCopy />
+                    Copy 
+                </button>
+            }
 
             {itemType === 'link'  &&
                 <button
@@ -42,6 +59,7 @@ export default function ShareAbles({ type = "hr", item, user, shareLink, itemLin
                     Copy {itemType === 'link' && "link"}
                 </button>
             }
+
             {itemType === 'link'  &&
                 <button
                     onClick={() => showCopySuccessToast()}
@@ -58,19 +76,22 @@ export default function ShareAbles({ type = "hr", item, user, shareLink, itemLin
                 </button>
             }
 
-            <Link className="w-full" to={`${type === 'vr' ? item.id+"/edit" : "edit"}`}>
-                <button className={`flex items-center gap-2 ${itemType === "link" && "justify-start pl-5 py-2 border-b"} ${itemType === "product" && "justify-center p-3"} text-gray-500 font-semibold text-xl ${type === 'vr' && "hover:bg-gray-200 w-full"}`} >
-                    <MdModeEditOutline />
-                    Edit {itemType === 'link' && "link"}
+            {itemType !== 'profile' &&
+                <Link className="w-full" to={`${type === 'vr' ? item.id+"/edit" : "edit"}`}>
+                    <button className={`flex items-center gap-2 ${itemType === "link" && "justify-start pl-5 py-2 border-b"} ${itemType === "product" && "justify-center p-3"} text-gray-500 font-semibold text-xl ${type === 'vr' && "hover:bg-gray-200 w-full"}`} >
+                        <MdModeEditOutline />
+                        Edit {itemType === 'link' && "link"}
+                    </button>
+                </Link>
+            }
+            
+            {itemType !== 'profile' &&
+                <button onClick={() => { setModalType(4); setShowModal(true) }} className={`flex items-center gap-2 ${itemType === "link" && "justify-start pl-5 py-2 border-b text-gray-500"} ${itemType === "product" && "justify-center p-3 text-red-500"}  font-semibold text-xl ${type === 'vr' && "hover:bg-gray-200 w-full"}`} >
+                    <MdOutlineDelete />
+                    Delete {itemType === 'link' && "link"}
                 </button>
-            </Link>
 
-            <button onClick={() => { setModalType(4); setShowModal(true) }} className={`flex items-center gap-2 ${itemType === "link" && "justify-start pl-5 py-2 border-b text-gray-500"} ${itemType === "product" && "justify-center p-3 text-red-500"}  font-semibold text-xl ${type === 'vr' && "hover:bg-gray-200 w-full"}`} >
-                <MdOutlineDelete />
-                Delete {itemType === 'link' && "link"}
-            </button>
-
-
+            }
 
             <Modal
                 isOpen={showModal}

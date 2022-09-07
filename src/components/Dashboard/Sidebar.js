@@ -15,7 +15,6 @@ const Sidebar = () => {
     }
     return (
         <ul className="menu scrollbar-hide p-4 overscroll-none overflow-y-auto w-72 bg-gray-100 text-base-content">
-            {/* <!-- Sidebar content here --> */}
             <div className="ml-5">
                 <div className='mt-3'><img className='w-16' src={logo} alt="" /></div>
                 <NavLink to="/" className='font-semibold mt-8 text-gray-500 text-lg flex items-center'><BsFillLightningChargeFill /> <small className='ml-2'>Get Started</small></NavLink>
@@ -27,10 +26,12 @@ const Sidebar = () => {
                             <span className='ml-2'>Home</span>
                         </p>
                     </Link>
-                    <p className='font-semibold text-sm mt-4 hover:text-primary cursor-pointer text-gray-500 flex justify-start items-center'>
-                        <MdManageAccounts />
-                        <span className='ml-2'>My Profile</span>
-                    </p>
+                    <Link to={'profile'}>
+                        <p className='font-semibold text-sm mt-4 hover:text-primary cursor-pointer text-gray-500 flex justify-start items-center'>
+                            <MdManageAccounts />
+                            <span className='ml-2'>My Profile</span>
+                        </p>
+                    </Link>
                 </div>
                 <div>
                     <h5 className='uppercase text-sm mt-4 text-gray-500'>payment</h5>
@@ -69,9 +70,28 @@ const Sidebar = () => {
                 </div>
                 <div>
                     <h5 className='uppercase text-sm mt-4 text-gray-500'>settings</h5>
-                    <p className={`font-semibold text-sm mt-2 hover:text-primary cursor-pointer text-gray-500 flex justify-start items-center ${isActive('payouts') ? "text-primary":"text-gray-500"} `}><TiHome /> <span className='ml-2'>Payouts</span></p>
-                    <p className='font-semibold text-sm mt-4 hover:text-primary cursor-pointer text-gray-500 flex justify-start items-center'><MdManageAccounts /> <span className='ml-2'>Integrations</span></p>
-                    <p className='font-semibold text-sm mt-4 hover:text-primary cursor-pointer text-gray-500 flex justify-start items-center'><MdManageAccounts /> <span className='ml-2'>Referrals</span></p>
+                    <Link to={'payouts'}>
+                        <p className={`font-semibold text-sm mt-2 hover:text-primary cursor-pointer text-gray-500 flex justify-start items-center ${isActive('payouts') ? "text-primary":"text-gray-500"} `}>
+                            <TiHome /> 
+                            <span className='ml-2'>
+                                Payouts
+                            </span>
+                        </p>
+                    </Link>
+                    <Link to={'integrations'}>
+                        <p className='font-semibold text-sm mt-4 hover:text-primary cursor-pointer text-gray-500 flex justify-start items-center'><MdManageAccounts /> 
+                            <span className='ml-2'>
+                                Integrations
+                            </span>
+                        </p>
+                    </Link>
+                    <Link to={'referrals'}>
+                        <p className='font-semibold text-sm mt-4 hover:text-primary cursor-pointer text-gray-500 flex justify-start items-center'><MdManageAccounts /> 
+                            <span className='ml-2'>
+                                Referrals
+                            </span>
+                        </p>
+                    </Link>
                 </div>
                 <div>
                     <p className='font-semibold text-sm mt-4 hover:text-primary cursor-pointer text-gray-500 flex justify-start items-center'><MdManageAccounts /> <span className='ml-2'>Logout</span></p>
