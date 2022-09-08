@@ -1,8 +1,19 @@
-import React from "react";
+import React from 'react'
 
-export default function PrimaryButton({ text = "Button", onCLickFunction, htmlFor, w = "auto" }) {
+export default function PrimaryButton({
+    text = 'Button',
+    onCLickFunction,
+    htmlFor,
+    w = 'auto',
+}) {
     return (
-        <label onClick={onCLickFunction} htmlFor={htmlFor} className={`btn btn-primary px-10 font-bold rounded text-white text-lg ${w==='full' && "w-full"}`}>
+        <label
+            onClick={onCLickFunction}
+            htmlFor={htmlFor}
+            className={`btn btn-primary px-10 font-bold rounded text-white text-lg ${
+                w === 'full' && 'w-full'
+            }`}
+        >
             {text}
         </label>
     )

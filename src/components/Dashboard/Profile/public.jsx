@@ -1,9 +1,5 @@
-const PublicProfileView = ()=>{
-    return (
-        <div>
-            Public Profile
-        </div>
-    )
+const PublicProfileView = () => {
+    return <div>Public Profile</div>
 }
 
-export default PublicProfileView;
+export default PublicProfileView

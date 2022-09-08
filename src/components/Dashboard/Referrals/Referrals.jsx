@@ -1,9 +1,5 @@
-import React from "react";
+import React from 'react'
 
-export default function RefIndex(){
-    return(
-        <div>
-            Referrals
-        </div>
-    )
+export default function RefIndex() {
+    return <div>Referrals</div>
 }

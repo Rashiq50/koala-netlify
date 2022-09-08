@@ -4,12 +4,16 @@ body {
     font-weight: 400;
 }
 
-.weight500{
+.weight500 {
     font-weight: 500 !important;
 }
 
-input[type=number]{
+input[type='number'] {
     -webkit-appearance: none !important;
-    -moz-appearance:    none !important;
-    appearance:         none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+}
+
+.ReactModal__Overlay {
+    overflow-y: auto !important;
 }

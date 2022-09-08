@@ -1,78 +1,93 @@
-import React, { useCallback, useContext, useRef, useState } from "react";
-import { MdOutlineArrowBack } from "react-icons/md";
-import { Link } from "react-router-dom";
-import TextInput from "../../Common/TextInput";
-import { useDropzone } from 'react-dropzone';
-import { AiFillEye } from "react-icons/ai";
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
-import { IoMdClose, IoMdCloudUpload } from "react-icons/io";
-import PrimaryButton from "../../Common/PrimaryButton";
-import { GlobalContext } from "../../../Context/GlobalContext";
-import Modal from 'react-modal';
-import { customStyles } from "../../../utils/customModalStyle";
-Modal.setAppElement('#root');
+import React, { useCallback, useContext, useRef, useState } from 'react'
+import { MdOutlineArrowBack } from 'react-icons/md'
+import { Link } from 'react-router-dom'
+import TextInput from '../../Common/TextInput'
+import { useDropzone } from 'react-dropzone'
+import { AiFillEye } from 'react-icons/ai'
+import ReactQuill from 'react-quill'
+import 'react-quill/dist/quill.snow.css'
+import { IoMdClose, IoMdCloudUpload } from 'react-icons/io'
+import PrimaryButton from '../../Common/PrimaryButton'
+import { GlobalContext } from '../../../Context/GlobalContext'
+import Modal from 'react-modal'
+import { customStyles } from '../../../utils/customModalStyle'
+Modal.setAppElement('#root')
 
 export default function ProductCreate() {
-
-    const [globalState, setGlobalState] = useContext(GlobalContext);
+    const [globalState, setGlobalState] = useContext(GlobalContext)
     const initialProductState = {
         id: globalState.products.length + 1,
-        name: "",
-        description: "",
-        price: "",
+        name: '',
+        description: '',
+        price: '',
         isFree: false,
         type: 'file',
-        redirectUrl: "",
+        redirectUrl: '',
         files: [],
-        coverImage: `https://picsum.photos/200/300?random=${globalState.products.length + 1}`,
+        coverImage: `https://picsum.photos/200/300?random=${
+            globalState.products.length + 1
+        }`,
         coverImageFile: null,
-        slug: "",
+        slug: '',
         earning: 0,
         pageView: 0,
         sales: 0,
-        user:globalState.user,
+        user: globalState.user,
     }
 
-    const [product, setProduct] = useState(initialProductState);
-    const [finishModalOpen, setFinishModal] = React.useState(false);
+    const [product, setProduct] = useState(initialProductState)
+    const [finishModalOpen, setFinishModal] = React.useState(false)
 
     const handleTypeChange = (typePass) => {
         setProduct({ ...product, type: typePass })
     }
 
-    const onDrop = useCallback(acceptedFiles => {
+    const onDrop = useCallback((acceptedFiles) => {
         // Do something with the files
     }, [])
-    const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop })
+    const { getRootProps, getInputProps, isDragActive } = useDropzone({
+        onDrop,
+    })
 
     const getUserName = () => {
-        const user = JSON.parse(localStorage.getItem("user"));
+        const user = JSON.parse(localStorage.getItem('user'))
         if (user) {
-            return user.username;
+            return user.username
         }
-        return "username";
+        return 'username'
     }
 
     const addProduct = () => {
-        setGlobalState({ ...globalState, "products": [...globalState.products, product] });
-        setFinishModal(true);
-        setProduct({ ...initialProductState });
+        setGlobalState({
+            ...globalState,
+            products: [...globalState.products, product],
+        })
+        setFinishModal(true)
+        setProduct({ ...initialProductState })
     }
 
     return (
         <div className="container mx-auto py-10 px-12">
-            <Link to="/product-pages" >
+            <Link to="/product-pages">
                 <div className="flex gap-4 items-center">
                     <MdOutlineArrowBack />
-                    <div className="text-xl font-semibold text-black">Add new product</div>
+                    <div className="text-xl font-semibold text-black">
+                        Add new product
+                    </div>
                 </div>
             </Link>
 
             <div className="mt-10">
                 <div className="mb-10">
                     <div className="mb-2">Name</div>
-                    <TextInput placeholder={"Name of product"} fullWidth={true} value={product.name} onValueChange={e => { setProduct({ ...product, name: e.target.value }) }} />
+                    <TextInput
+                        placeholder={'Name of product'}
+                        fullWidth={true}
+                        value={product.name}
+                        onValueChange={(e) => {
+                            setProduct({ ...product, name: e.target.value })
+                        }}
+                    />
                 </div>
 
                 <div className="mb-10">
@@ -80,27 +95,33 @@ export default function ProductCreate() {
                     <ReactQuill
                         theme="snow"
                         value={product.description}
-                        onChange={e => { setProduct({ ...product, description: e }) }}
+                        onChange={(e) => {
+                            setProduct({ ...product, description: e })
+                        }}
                         placeholder="Describe your product here..."
                     />
                 </div>
 
                 <div className="mb-10">
                     <div className="mb-2">Product Image</div>
-                    <div {...getRootProps()} className="border border-dashed text-center rounded-lg p-8 border-black">
+                    <div
+                        {...getRootProps()}
+                        className="border border-dashed text-center rounded-lg p-8 border-black"
+                    >
                         <IoMdCloudUpload fontSize={48} className="mx-auto" />
                         <input {...getInputProps()} />
-                        {
-                            isDragActive ?
-                                <p>Drop the files here ...</p> :
-                                <p className="text-lg">
-                                    <button className="text-[#20215A] font-bold mr-1">
-                                        Click to upload
-                                    </button>
-                                    or drag and drop your product image here <br />
-                                    400x400px image recommended (.png or .jpg). (20MB maximum file size)
-                                </p>
-                        }
+                        {isDragActive ? (
+                            <p>Drop the files here ...</p>
+                        ) : (
+                            <p className="text-lg">
+                                <button className="text-[#20215A] font-bold mr-1">
+                                    Click to upload
+                                </button>
+                                or drag and drop your product image here <br />
+                                400x400px image recommended (.png or .jpg).
+                                (20MB maximum file size)
+                            </p>
+                        )}
                     </div>
                 </div>
 
@@ -109,88 +130,113 @@ export default function ProductCreate() {
                     <div className="flex gap-4">
                         <label className="text-lg cursor-pointer">
                             <input
-                                type={"radio"}
+                                type={'radio'}
                                 checked={product.type === 'file'}
-                                onChange={e => { setProduct({ ...product, type: 'file' }) }}
+                                onChange={(e) => {
+                                    setProduct({ ...product, type: 'file' })
+                                }}
                             />
-                            <span className="ml-1">
-                                File
-                            </span>
+                            <span className="ml-1">File</span>
                         </label>
                         <label className="text-lg cursor-pointer">
                             <input
-                                type={"radio"}
+                                type={'radio'}
                                 checked={product.type === 'url'}
-                                onChange={e => { setProduct({ ...product, type: 'url' }) }}
+                                onChange={(e) => {
+                                    setProduct({ ...product, type: 'url' })
+                                }}
                             />
-                            <span className="ml-1">
-                                Redirect URL
-                            </span>
+                            <span className="ml-1">Redirect URL</span>
                         </label>
                     </div>
 
-                    {product.type === 'url' &&
+                    {product.type === 'url' && (
                         <div className="mb-10">
                             <div className="mb-2 mt-6">Redirect URL</div>
-                            <TextInput placeholder={"https://   "} fullWidth={true} value={product.redirectUrl} onValueChange={e => { setProduct({ ...product, redirectUrl: e.target.value }) }} />
+                            <TextInput
+                                placeholder={'https://   '}
+                                fullWidth={true}
+                                value={product.redirectUrl}
+                                onValueChange={(e) => {
+                                    setProduct({
+                                        ...product,
+                                        redirectUrl: e.target.value,
+                                    })
+                                }}
+                            />
                         </div>
-                    }
+                    )}
 
-                    {product.type === 'file' &&
+                    {product.type === 'file' && (
                         <div className="mb-10">
                             <div className="mb-2 mt-6">Files</div>
-                            <div {...getRootProps()} className="border border-dashed text-center rounded-lg p-8 border-black">
-                                <IoMdCloudUpload fontSize={48} className="mx-auto" />
+                            <div
+                                {...getRootProps()}
+                                className="border border-dashed text-center rounded-lg p-8 border-black"
+                            >
+                                <IoMdCloudUpload
+                                    fontSize={48}
+                                    className="mx-auto"
+                                />
                                 <input {...getInputProps()} />
-                                {isDragActive ?
-                                    <p>Drop the files here ...</p> :
+                                {isDragActive ? (
+                                    <p>Drop the files here ...</p>
+                                ) : (
                                     <p className="text-lg">
                                         <button className="text-[#20215A] font-bold mr-1">
                                             Click to upload
                                         </button>
-                                        or drag and drop your product image here <br />
-                                        400x400px image recommended (.png or .jpg). (20MB maximum file size)
+                                        or drag and drop your product image here
+                                        <br />
+                                        400x400px image recommended (.png or
+                                        .jpg). (20MB maximum file size)
                                     </p>
-                                }
+                                )}
                             </div>
                         </div>
-                    }
+                    )}
                 </div>
 
                 <div className="mb-10">
                     <div className="flex gap-4">
                         <label className="text-lg cursor-pointer">
                             <input
-                                type={"radio"}
+                                type={'radio'}
                                 checked={!product.isFree}
-                                onChange={e => { setProduct({ ...product, isFree: false }) }}
+                                onChange={(e) => {
+                                    setProduct({ ...product, isFree: false })
+                                }}
                             />
-                            <span className="ml-1">
-                                Fixed price
-                            </span>
+                            <span className="ml-1">Fixed price</span>
                         </label>
                         <label className="text-lg cursor-pointer">
                             <input
-                                type={"radio"}
+                                type={'radio'}
                                 checked={product.isFree}
-                                onChange={e => { setProduct({ ...product, isFree: true }) }}
+                                onChange={(e) => {
+                                    setProduct({ ...product, isFree: true })
+                                }}
                             />
-                            <span className="ml-1">
-                                Free
-                            </span>
+                            <span className="ml-1">Free</span>
                         </label>
                     </div>
 
-                    {!product.isFree &&
+                    {!product.isFree && (
                         <div className="mb-10">
                             <div className="mb-2 mt-6">Amount</div>
                             <TextInput
-                                placeholder={"NGN"}
+                                placeholder={'NGN'}
                                 fullWidth={true}
                                 value={product.price}
-                                onValueChange={e => { setProduct({ ...product, price: e.target.value }) }} />
+                                onValueChange={(e) => {
+                                    setProduct({
+                                        ...product,
+                                        price: e.target.value,
+                                    })
+                                }}
+                            />
                         </div>
-                    }
+                    )}
                 </div>
 
                 <div className="mb-10">
@@ -200,33 +246,55 @@ export default function ProductCreate() {
                             {window.location.origin}/buy/username/
                         </div>
                         <TextInput
-                            placeholder={"slug"}
+                            placeholder={'slug'}
                             value={product.slug}
-                            onValueChange={e => { setProduct({ ...product, slug: e.target.value }) }}
+                            onValueChange={(e) => {
+                                setProduct({ ...product, slug: e.target.value })
+                            }}
                         />
                     </div>
                 </div>
 
                 <div className="flex justify-end">
                     <div>
-                        <PrimaryButton text="Add product" onCLickFunction={() => { console.log(product); addProduct() }} />
+                        <PrimaryButton
+                            text="Add product"
+                            onCLickFunction={() => {
+                                console.log(product)
+                                addProduct()
+                            }}
+                        />
                     </div>
                 </div>
             </div>
             <Modal
                 isOpen={finishModalOpen}
-                onRequestClose={() => { setFinishModal(false) }}
+                onRequestClose={() => {
+                    setFinishModal(false)
+                }}
                 style={customStyles}
             >
                 <div className="w-full flex gap-x-96 items-center py-6 px-10">
-                    <div className="text-2xl font-semibold text-[#20215A]">New Product Added!</div>
+                    <div className="text-2xl font-semibold text-[#20215A]">
+                        New Product Added!
+                    </div>
                     <div className="flex items-center">
-                        <a href={`${window.location.origin}/buy/${getUserName()}/${product.slug}`} target="_" >
+                        <a
+                            href={`${
+                                window.location.origin
+                            }/buy/${getUserName()}/${product.slug}`}
+                            target="_"
+                        >
                             <button className="btn-outline btn flex gap-2">
                                 View <AiFillEye />
                             </button>
                         </a>
-                        <button onClick={() => { setFinishModal(false) }} className="text-[#20215A] ml-40">
+                        <button
+                            onClick={() => {
+                                setFinishModal(false)
+                            }}
+                            className="text-[#20215A] ml-40"
+                        >
                             <IoMdClose fontSize={32} fontWeight="bold" />
                         </button>
                     </div>

@@ -1,10 +1,20 @@
-import React from "react";
-import { useState, useContext } from "react";
-import { HiOutlineExternalLink } from "react-icons/hi";
-import { GlobalContext } from "../../../Context/GlobalContext";
-import ShareAbles from "../../Misc/shareables";
-import AvatarPlaceHolder from "../../Common/AvataPlaceHolder";
-import BioSection from "./BioSection";
+import React from 'react'
+import { useState, useContext } from 'react'
+import { HiOutlineExternalLink } from 'react-icons/hi'
+import { GlobalContext } from '../../../Context/GlobalContext'
+import ShareAbles from '../../Misc/shareables'
+import AvatarPlaceHolder from '../../Common/AvataPlaceHolder'
+import BioSection from './BioSection'
+import { BiPieChart } from 'react-icons/bi'
+import Modal from 'react-modal'
+import MovableProfileParts from './components/MovableProfileParts'
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
+import { v4 as uuidv4 } from 'uuid'
+import PrimaryButton from '../../Common/PrimaryButton'
+import { customStyles } from '../../../utils/customModalStyle'
+import { IoMdClose } from 'react-icons/io'
+import ProfileModalContens from './components/ProfileModalContents'
+
 // const types = [
 //     textType:{
 //         title:"",
@@ -18,43 +28,85 @@ import BioSection from "./BioSection";
 //     }
 // ]
 
-export default function ProfileIndex(){
-    const [showBioSection, setShowBioSection] = useState(false);
-    const [showMain, setShowMain] = useState(true);
-    const [state, setState] = useContext(GlobalContext);
+export default function ProfileIndex() {
+    const [showBioSection, setShowBioSection] = useState(false)
+    const [showMain, setShowMain] = useState(true)
+    const [showModal, setShowModal] = useState(false)
+    const [state, setState] = useContext(GlobalContext)
     const [profile, setProfile] = useState({
-        bioSection:{
-            index:0,
-            name:state.user.name,
-            username:state.user.username,
-            bio:"Morbi mattis libero a dolor egestas gravida. Maecenas",
-            bioStyle:"center",
-            socialLinks:[],
-            showProfilePhoto:true,
+        bioSection: {
+            index: 0,
+            name: state.user.name,
+            username: state.user.username,
+            bio: 'Morbi mattis libero a dolor egestas gravida. Maecenas',
+            bioStyle: 'center',
+            socialLinks: [],
+            showProfilePhoto: true,
         },
-        sections:[
+        sections: [
             {
-                title:"",
-                body:"",
-                type:"text"
+                title: 'Text',
+                sectionTitle: '',
+                subTitle: 'Add text block',
+                body: '',
+                type: 'text',
             },
             {
-                hasImage:false,
-                image:"",
-                title:"",
-                body:"",
-                descAlign:"left",
-                type:"about",
-            }
+                hasImage: false,
+                image: '',
+                title: 'Images',
+                sectionTitle: '',
+                subTitle: 'Add image gallery',
+                body: '',
+                descAlign: 'left',
+                type: 'about',
+            },
+            {
+                hasImage: false,
+                image: '',
+                title: 'About',
+                sectionTitle: '',
+                subTitle: 'Tell your audience more about yourself',
+                body: '',
+                descAlign: 'left',
+                type: 'about',
+            },
         ],
     })
-    return(
+    const list = [1, 2, 3]
+
+    const reorder = (list, startIndex, endIndex) => {
+        const result = Array.from(list)
+        const [removed] = result.splice(startIndex, 1)
+        result.splice(endIndex, 0, removed)
+
+        return result
+    }
+
+    const onDragEnd = (result) => {
+        if (!result.destination) {
+            return
+        }
+        const items = reorder(
+            profile.sections,
+            result.source.index,
+            result.destination.index,
+        )
+        console.log(items)
+        setProfile({ ...profile, sections: [...items] })
+    }
+
+    return (
         <div className="container mx-auto py-10">
             <div className="flex justify-between">
                 <div className="flex items-center gap-4">
-                    <h1 className='text-2xl font-semibold mb-2'>My Profile</h1>
-                    <a href={`${window.location.origin}/${state.user?.username}`} target="_" className="text-blue-600" >
-                        <HiOutlineExternalLink fontSize={"1.5rem"} />
+                    <h1 className="text-2xl font-semibold mb-2">My Profile</h1>
+                    <a
+                        href={`${window.location.origin}/${state.user?.username}`}
+                        target="_"
+                        className="text-blue-600"
+                    >
+                        <HiOutlineExternalLink fontSize={'1.5rem'} />
                     </a>
                 </div>
                 <div>
@@ -64,14 +116,23 @@ export default function ProfileIndex(){
 
             <div className="grid grid-cols-3 gap-3">
                 <div className="col-span-2">
-                    {showMain &&
+                    {showMain && (
                         <div>
-                            <div className="text-gray-400 my-4" >Add links and content to your profile</div>
+                            <div className="text-gray-400 my-4">
+                                Add links and content to your profile
+                            </div>
                             <div className="bg-gray-50 p-10 rounded">
-                                <div 
-                                    onClick={()=>{setShowMain(()=>false); setShowBioSection(true)}} 
-                                    className="flex gap-4 cursor-pointer items-center bg-white p-4 rounded-lg">
-                                    <AvatarPlaceHolder user={state.user} w="w-20" />
+                                <div
+                                    onClick={() => {
+                                        setShowMain(() => false)
+                                        setShowBioSection(true)
+                                    }}
+                                    className="flex gap-4 cursor-pointer items-center bg-white p-4 rounded mb-4"
+                                >
+                                    <AvatarPlaceHolder
+                                        user={state.user}
+                                        w="w-20"
+                                    />
                                     <div>
                                         <div className="my-1 text-xl capitalize">
                                             {profile.bioSection.name}
@@ -81,20 +142,90 @@ export default function ProfileIndex(){
                                         </div>
                                     </div>
                                 </div>
+                                <DragDropContext onDragEnd={onDragEnd}>
+                                    <Droppable droppableId="droppable">
+                                        {(provided, snapshot) => (
+                                            <div
+                                                ref={provided.innerRef}
+                                                {...provided.droppableProps}
+                                            >
+                                                {profile.sections.map(
+                                                    (section, index) => (
+                                                        <Draggable
+                                                            key={uuidv4().toString()}
+                                                            index={index}
+                                                            draggableId={uuidv4().toString()}
+                                                        >
+                                                            {(
+                                                                provided,
+                                                                snapshot,
+                                                            ) => (
+                                                                <div
+                                                                    ref={
+                                                                        provided.innerRef
+                                                                    }
+                                                                    {...provided.draggableProps}
+                                                                    {...provided.dragHandleProps}
+                                                                >
+                                                                    <MovableProfileParts
+                                                                        key={uuidv4().toString()}
+                                                                        icon={
+                                                                            <BiPieChart
+                                                                                fontSize={
+                                                                                    '28px'
+                                                                                }
+                                                                            />
+                                                                        }
+                                                                        title={
+                                                                            section.title
+                                                                        }
+                                                                        subTitle={
+                                                                            section.subTitle
+                                                                        }
+                                                                    />
+                                                                </div>
+                                                            )}
+                                                        </Draggable>
+                                                    ),
+                                                )}
+                                                {provided.placeholder}
+                                            </div>
+                                        )}
+                                    </Droppable>
+                                </DragDropContext>
+
+                                <PrimaryButton
+                                    text="Add new section"
+                                    w="full"
+                                    onCLickFunction={() => setShowModal(true)}
+                                />
                             </div>
                         </div>
-                    }
-                    {showBioSection &&
-                        <BioSection bio={profile.bioSection} closeBio={()=>{
-                            setShowMain(()=>true); setShowBioSection(false)
-                        }} />
-                    }
+                    )}
+                    {showBioSection && (
+                        <BioSection
+                            profile={profile}
+                            setProfile={setProfile}
+                            closeBio={() => {
+                                setShowMain(() => true)
+                                setShowBioSection(false)
+                            }}
+                        />
+                    )}
                 </div>
 
                 <div className="col-span-1 p-10">
                     <div className="rounded-3xl shadow-2xl p-8 h-[60vh] overflow-y-auto">
-                        <div className={`flex flex-col ${profile.bioSection.bioStyle === 'center' ? "items-center text-center" :"items-start text-left" }`} >
-                            <AvatarPlaceHolder user={state.user} w="w-20" />
+                        <div
+                            className={`flex flex-col ${
+                                profile.bioSection.bioStyle === 'center'
+                                    ? 'items-center text-center'
+                                    : 'items-start text-left'
+                            }`}
+                        >
+                            {profile.bioSection.showProfilePhoto && (
+                                <AvatarPlaceHolder user={state.user} w="w-20" />
+                            )}
                             <div className="my-4 text-2xl capitalize">
                                 {profile.bioSection.name}
                             </div>
@@ -105,6 +236,29 @@ export default function ProfileIndex(){
                     </div>
                 </div>
             </div>
+
+            <Modal
+                isOpen={showModal}
+                style={customStyles}
+                onRequestClose={() => setShowModal(false)}
+            >
+                <div className="p-6 w-[600px]">
+                    <div className="flex justify-between items-center w-full mb-2">
+                        <div className="text-3xl font-semibold">
+                            Add New Section
+                        </div>
+                        <button
+                            onClick={() => {
+                                setShowModal(false)
+                            }}
+                        >
+                            <IoMdClose fontSize={'32px'} />
+                        </button>
+                    </div>
+
+                    <ProfileModalContens />
+                </div>
+            </Modal>
         </div>
     )
 }

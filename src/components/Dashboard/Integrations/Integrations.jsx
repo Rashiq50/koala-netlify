@@ -1,8 +1,7 @@
-import React from "react";
+import React from 'react'
 
-
-export default function Integrations(){
-    return(
+export default function Integrations() {
+    return (
         <div>
             <div>Integrations</div>
         </div>
