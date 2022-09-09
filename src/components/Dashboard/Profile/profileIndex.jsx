@@ -250,7 +250,7 @@ export default function ProfileIndex() {
                             profile={profile}
                             setProfile={setProfile}
                             closeBio={() => {
-                                setProfile((prev) => (prev = rollBackState))
+                                // setProfile((prev) => (prev = rollBackState))
                                 setShowMain(() => true)
                                 setShowBioSection(false)
                             }}
