@@ -14,6 +14,7 @@ import PrimaryButton from '../../Common/PrimaryButton'
 import { customStyles } from '../../../utils/customModalStyle'
 import { IoMdClose } from 'react-icons/io'
 import ProfileModalContens from './components/ProfileModalContents'
+import EditTextSection from './components/TextSection/EditTextSection'
 
 // const types = [
 //     textType:{
@@ -30,9 +31,13 @@ import ProfileModalContens from './components/ProfileModalContents'
 
 export default function ProfileIndex() {
     const [showBioSection, setShowBioSection] = useState(false)
+    const [showTextEditSection, setShowTextEditSection] = useState(false)
+    const [currentSection, setCurrentSection] = useState(null)
+    const [rollBackState, setRollBackState] = useState(null)
     const [showMain, setShowMain] = useState(true)
     const [showModal, setShowModal] = useState(false)
     const [state, setState] = useContext(GlobalContext)
+
     const [profile, setProfile] = useState({
         bioSection: {
             index: 0,
@@ -45,31 +50,45 @@ export default function ProfileIndex() {
         },
         sections: [
             {
-                title: 'Text',
+                id: uuidv4().toString(),
+                title: 'Text Section',
                 sectionTitle: '',
                 subTitle: 'Add text block',
-                body: '',
+                titleAlign:"center",
+                body: `<p>
+                Morbi mattis libero a dolor egestas gravida. Maecenas euismod mauris id ante sodales eleifend. Nunc in felis id dui accumsan imperdiet. 
+                </p>`,
                 type: 'text',
+                isHidden: false,
+                show: false,
             },
             {
+                id: uuidv4().toString(),
                 hasImage: false,
                 image: '',
-                title: 'Images',
+                title: 'Images Section',
+                titleAlign:"left",
                 sectionTitle: '',
                 subTitle: 'Add image gallery',
                 body: '',
                 descAlign: 'left',
-                type: 'about',
+                type: 'image',
+                isHidden: false,
+                show: false,
             },
             {
+                id: uuidv4().toString(),
                 hasImage: false,
                 image: '',
-                title: 'About',
+                title: 'About Section',
+                titleAlign:"left",
                 sectionTitle: '',
                 subTitle: 'Tell your audience more about yourself',
                 body: '',
                 descAlign: 'left',
                 type: 'about',
+                isHidden: false,
+                show: false,
             },
         ],
     })
@@ -95,6 +114,24 @@ export default function ProfileIndex() {
         console.log(items)
         setProfile({ ...profile, sections: [...items] })
     }
+
+    const handleClick = (section) => {
+        let functionToReturn
+        switch (section.type) {
+            case 'text':
+                functionToReturn = setShowTextEditSection
+                break
+
+            default:
+                break
+        }
+        setRollBackState((prev) => (prev = profile))
+        setCurrentSection((prev) => (prev = section))
+        setShowMain(false)
+        functionToReturn(true)
+    }
+
+    // console.log(returnClickFunction("text"))
 
     return (
         <div className="container mx-auto py-10">
@@ -176,11 +213,17 @@ export default function ProfileIndex() {
                                                                                 }
                                                                             />
                                                                         }
-                                                                        title={
-                                                                            section.title
+                                                                        handleClick={
+                                                                            handleClick
                                                                         }
-                                                                        subTitle={
-                                                                            section.subTitle
+                                                                        setShowMain={
+                                                                            setShowMain
+                                                                        }
+                                                                        section={
+                                                                            section
+                                                                        }
+                                                                        setProfile={
+                                                                            setProfile
                                                                         }
                                                                     />
                                                                 </div>
@@ -207,8 +250,25 @@ export default function ProfileIndex() {
                             profile={profile}
                             setProfile={setProfile}
                             closeBio={() => {
+                                setProfile((prev) => (prev = rollBackState))
                                 setShowMain(() => true)
                                 setShowBioSection(false)
+                            }}
+                        />
+                    )}
+                    {showTextEditSection && currentSection && (
+                        <EditTextSection
+                            profile={profile}
+                            setProfile={setProfile}
+                            data={currentSection}
+                            closeSection={() => {
+                                setProfile((prev) => (prev = rollBackState))
+                                setShowMain(() => true)
+                                setShowTextEditSection(false)
+                            }}
+                            saveData={() => {
+                                setShowMain(() => true)
+                                setShowTextEditSection(false)
                             }}
                         />
                     )}
@@ -233,6 +293,30 @@ export default function ProfileIndex() {
                                 {profile.bioSection.bio}
                             </div>
                         </div>
+
+                        {profile.sections.map((section, index) => (
+                            <div className="my-10">
+                                <div
+                                    className={`text-lg my-2 ${
+                                        section.titleAlign === 'center' &&
+                                        'text-center'
+                                    } ${
+                                        section.titleAlign === 'left' &&
+                                        'text-left'
+                                    } ${
+                                        section.titleAlign === 'right' &&
+                                        'text-right'
+                                    }`}
+                                >
+                                    {section.title}
+                                </div>
+                                <div
+                                    dangerouslySetInnerHTML={{
+                                        __html: section?.body,
+                                    }}
+                                ></div>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </div>

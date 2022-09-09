@@ -3,15 +3,20 @@ import { BiPieChart } from 'react-icons/bi'
 import { MdDeleteOutline } from 'react-icons/md'
 import { TbGridDots } from 'react-icons/tb'
 
-export default function MovableProfileParts({ title, subTitle, icon }) {
+export default function MovableProfileParts({ section, icon, handleClick, setProfile }) {
     return (
-        <div className="flex gap-4 cursor-pointer items-center bg-white p-4 rounded mb-4">
+        <div
+            onClick={() => {
+                handleClick(section)
+            }}
+            className="flex gap-4 cursor-pointer items-center bg-white p-4 rounded mb-4"
+        >
             <div className="bg-gray-200 text-gray-600 p-2 flex items-center justify-center rounded-[50%]">
                 {icon}
             </div>
             <div className="flex-grow">
-                <div className="my-1 text-lg capitalize">{title}</div>
-                <div className="text-gray-500 text-sm">{subTitle}</div>
+                <div className="my-1 text-lg capitalize">{section.title}</div>
+                <div className="text-gray-500 text-sm">{section.subTitle}</div>
             </div>
             <div className="text-gray-500">
                 <button className="mx-2">
