@@ -15,6 +15,7 @@ import { customStyles } from '../../../utils/customModalStyle'
 import { IoMdClose } from 'react-icons/io'
 import ProfileModalContens from './components/ProfileModalContents'
 import EditTextSection from './components/TextSection/EditTextSection'
+import EditAboutSection from './components/AboutSection/EditAboutSection'
 
 // const types = [
 //     textType:{
@@ -32,6 +33,7 @@ import EditTextSection from './components/TextSection/EditTextSection'
 export default function ProfileIndex() {
     const [showBioSection, setShowBioSection] = useState(false)
     const [showTextEditSection, setShowTextEditSection] = useState(false)
+    const [showAboutSection, setShowAboutSection] = useState(false)
     const [currentSection, setCurrentSection] = useState(null)
     const [rollBackState, setRollBackState] = useState(null)
     const [showMain, setShowMain] = useState(true)
@@ -54,12 +56,12 @@ export default function ProfileIndex() {
                 title: 'Text Section',
                 sectionTitle: '',
                 subTitle: 'Add text block',
-                titleAlign:"center",
+                titleAlign: 'center',
                 body: `<p>
                 Morbi mattis libero a dolor egestas gravida. Maecenas euismod mauris id ante sodales eleifend. Nunc in felis id dui accumsan imperdiet. 
                 </p>`,
                 type: 'text',
-                isHidden: false,
+                isHidden: true,
                 show: false,
             },
             {
@@ -67,7 +69,7 @@ export default function ProfileIndex() {
                 hasImage: false,
                 image: '',
                 title: 'Images Section',
-                titleAlign:"left",
+                titleAlign: 'left',
                 sectionTitle: '',
                 subTitle: 'Add image gallery',
                 body: '',
@@ -81,12 +83,14 @@ export default function ProfileIndex() {
                 hasImage: false,
                 image: '',
                 title: 'About Section',
-                titleAlign:"left",
+                titleAlign: 'left',
                 sectionTitle: '',
                 subTitle: 'Tell your audience more about yourself',
                 body: '',
                 descAlign: 'left',
                 type: 'about',
+                imageLink: '',
+                imageFile: null,
                 isHidden: false,
                 show: false,
             },
@@ -121,6 +125,9 @@ export default function ProfileIndex() {
             case 'text':
                 functionToReturn = setShowTextEditSection
                 break
+            case 'about':
+                functionToReturn = setShowAboutSection
+                break
 
             default:
                 break
@@ -131,6 +138,68 @@ export default function ProfileIndex() {
         functionToReturn(true)
     }
 
+    const AddNewSection = (section) => {
+        let functionToReturn
+        switch (section.type) {
+            case 'text':
+                functionToReturn = setShowTextEditSection
+                break
+            case 'about':
+                functionToReturn = setShowAboutSection
+                break
+
+            default:
+                break
+        }
+        setRollBackState((prev) => (prev = profile))
+        setCurrentSection((prev) => (prev = section))
+        const tmp = profile.sections
+        tmp.push(section)
+        setProfile((prev) => (prev = { ...profile, sections: [...tmp] }))
+        setShowMain(false)
+        functionToReturn(true)
+    }
+
+    const handleDelete = (section) => {
+        setProfile({
+            ...profile,
+            sections: profile.sections.filter((el) => el.id != section.id),
+        })
+        let functionToReturn
+        switch (section.type) {
+            case 'text':
+                functionToReturn = setShowTextEditSection
+                break
+
+            default:
+                break
+        }
+        functionToReturn(false)
+        setShowMain(true)
+    }
+
+    const ReadFileAsDataUrl = (file, section) => {
+        const reader = new FileReader()
+
+        reader.onload = function (e) {
+            console.log('DataURL:', e.target.result)
+            setProfile({
+                ...profile,
+                sections: [
+                    ...profile.sections.map((item) => {
+                        if (item.id === section.id) {
+                            return {
+                                ...item,
+                                imageLink: e.target.result,
+                            }
+                        }
+                        return item
+                    }),
+                ],
+            })
+        }
+        reader.readAsDataURL(file)
+    }
     // console.log(returnClickFunction("text"))
 
     return (
@@ -225,6 +294,9 @@ export default function ProfileIndex() {
                                                                         setProfile={
                                                                             setProfile
                                                                         }
+                                                                        handleDelete={
+                                                                            handleDelete
+                                                                        }
                                                                     />
                                                                 </div>
                                                             )}
@@ -270,6 +342,25 @@ export default function ProfileIndex() {
                                 setShowMain(() => true)
                                 setShowTextEditSection(false)
                             }}
+                            handleDelete={handleDelete}
+                        />
+                    )}
+                    {showAboutSection && currentSection && (
+                        <EditAboutSection
+                            profile={profile}
+                            setProfile={setProfile}
+                            data={currentSection}
+                            closeSection={() => {
+                                setProfile((prev) => (prev = rollBackState))
+                                setShowMain(() => true)
+                                setShowAboutSection(false)
+                            }}
+                            saveData={() => {
+                                setShowMain(() => true)
+                                setShowAboutSection(false)
+                            }}
+                            handleDelete={handleDelete}
+                            handleUpload={ReadFileAsDataUrl}
                         />
                     )}
                 </div>
@@ -295,27 +386,44 @@ export default function ProfileIndex() {
                         </div>
 
                         {profile.sections.map((section, index) => (
-                            <div className="my-10">
-                                <div
-                                    className={`text-lg my-2 ${
-                                        section.titleAlign === 'center' &&
-                                        'text-center'
-                                    } ${
-                                        section.titleAlign === 'left' &&
-                                        'text-left'
-                                    } ${
-                                        section.titleAlign === 'right' &&
-                                        'text-right'
-                                    }`}
-                                >
-                                    {section.title}
-                                </div>
-                                <div
-                                    dangerouslySetInnerHTML={{
-                                        __html: section?.body,
-                                    }}
-                                ></div>
-                            </div>
+                            <React.Fragment key={section.id}>
+                                {
+                                    <div className="my-10">
+                                        <div
+                                            className={` ${
+                                                section.isHidden &&
+                                                'text-gray-300 '
+                                            } text-lg my-2 ${
+                                                section.titleAlign ===
+                                                    'center' && 'text-center'
+                                            } ${
+                                                section.titleAlign === 'left' &&
+                                                'text-left'
+                                            } ${
+                                                section.titleAlign ===
+                                                    'right' && 'text-right'
+                                            }`}
+                                        >
+                                            {section.title}
+                                        </div>
+                                        {section.imageFile && (
+                                            <img
+                                                src={section.imageLink}
+                                                className={`w-full object-cover my-2`}
+                                            />
+                                        )}
+                                        <div
+                                            className={`${
+                                                section.isHidden &&
+                                                'text-gray-300 '
+                                            }`}
+                                            dangerouslySetInnerHTML={{
+                                                __html: section?.body,
+                                            }}
+                                        ></div>
+                                    </div>
+                                }
+                            </React.Fragment>
                         ))}
                     </div>
                 </div>
@@ -340,7 +448,11 @@ export default function ProfileIndex() {
                         </button>
                     </div>
 
-                    <ProfileModalContens />
+                    <ProfileModalContens
+                        setShowModal={setShowModal}
+                        handleClick={AddNewSection}
+                        uuidv4={uuidv4}
+                    />
                 </div>
             </Modal>
         </div>

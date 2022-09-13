@@ -5,8 +5,11 @@ import TextInput from '../../../../Common/TextInput'
 import ReactQuill from 'react-quill'
 import PrimaryButton from '../../../../Common/PrimaryButton'
 import { BiTrash } from 'react-icons/bi'
+import { ImImage } from 'react-icons/im'
+import { useEffect } from 'react'
+import { IoClose } from 'react-icons/io5'
 
-const EditTextSection = ({
+const EditAboutSection = ({
     profile,
     setProfile,
     closeSection,
@@ -15,6 +18,62 @@ const EditTextSection = ({
     handleDelete,
 }) => {
     const [sectionData, setSectionData] = useState(data)
+    const [file, setFile] = useState(sectionData.imageFile)
+
+    const ReadFileAsDataUrl = (file, section) => {
+        const reader = new FileReader()
+        reader.onload = function (e) {
+            setSectionData({
+                ...sectionData,
+                imageLink: e.target.result,
+                imageFile: file,
+            })
+            setProfile({
+                ...profile,
+                sections: [
+                    ...profile.sections.map((item) => {
+                        if (item.id === section.id) {
+                            return {
+                                ...item,
+                                imageLink: e.target.result,
+                                imageFile: file,
+                            }
+                        }
+                        return item
+                    }),
+                ],
+            })
+        }
+        reader.readAsDataURL(file)
+    }
+
+    useEffect(() => {
+        if (file) {
+            ReadFileAsDataUrl(file, sectionData)
+        } else {
+            document.getElementById("fileUpload").value = "";
+            setSectionData({
+                ...sectionData,
+                imageLink: '',
+                imageFile: null,
+            })
+            setProfile({
+                ...profile,
+                sections: [
+                    ...profile.sections.map((item) => {
+                        if (item.id === sectionData.id) {
+                            return {
+                                ...item,
+                                imageLink: '',
+                                imageFile: null,
+                            }
+                        }
+                        return item
+                    }),
+                ],
+            })
+        }
+    }, [file])
 
     return (
         <div className="mt-8">
@@ -24,7 +83,7 @@ const EditTextSection = ({
                     onClick={() => closeSection()}
                 >
                     <BsArrowLeft />
-                    Text Section
+                    About Section
                 </button>
                 <div className="flex items-center gap-x-3">
                     {sectionData.isHidden && (
@@ -83,12 +142,17 @@ const EditTextSection = ({
                             Hide
                         </button>
                     )}
-                    <button onClick={()=>{handleDelete(sectionData)}} className="flex items-center gap-1">
+                    <button
+                        onClick={() => {
+                            handleDelete(sectionData)
+                        }}
+                        className="flex items-center gap-1"
+                    >
                         <BiTrash /> Delete
                     </button>
                 </div>
             </div>
-            <div className="my-2 text-gray-500">Add a text block</div>
+            <div className="my-2 text-gray-500">{sectionData.subTitle}</div>
 
             <div className="mb-3 mt-8">
                 <div className="flex justify-between items-center my-2">
@@ -244,6 +308,44 @@ const EditTextSection = ({
                 />
             </div>
 
+            <div className="my-3">
+                <div className="my-2">Add Photo</div>
+                <button
+                    onClick={() => {
+                        document.getElementById('fileUpload').click()
+                    }}
+                    disabled={sectionData.imageFile}
+                    className="border rounded gap-2 justify-start flex items-center bg-gray-100 hover:bg-gray-200 py-4 w-full px-4"
+                >
+                    {!sectionData.imageFile && (
+                        <React.Fragment>
+                            <ImImage /> Upload
+                        </React.Fragment>
+                    )}
+                    {sectionData.imageFile && (
+                        <React.Fragment>
+                            <div className="flex-grow text-left">
+                                {sectionData.imageFile.name}
+                            </div>
+                            <div
+                                className='cursor-pointer'
+                                onClick={() => {
+                                    setFile(null)
+                                }}
+                            >
+                                <IoClose />{' '}
+                            </div>
+                        </React.Fragment>
+                    )}
+                </button>
+                <input
+                    onChange={(e) => setFile(e.target.files[0])}
+                    id="fileUpload"
+                    type={'file'}
+                    className="hidden"
+                />
+            </div>
+
             <div className="mt-8 mb-4 uppercase text-semibold text-xl">
                 CONTENT AREA
             </div>
@@ -291,4 +393,4 @@ const EditTextSection = ({
     )
 }
 
-export default EditTextSection
+export default EditAboutSection
