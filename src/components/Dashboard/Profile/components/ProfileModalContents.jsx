@@ -13,11 +13,23 @@ const ProfileModalContens = ({ handleClick, setShowModal,uuidv4 }) => {
         {
             name: 'Basic Blocks',
             items: [
+
                 {
-                    name: 'About',
-                    desc: 'Tell your audience more about yourself',
-                    icon: <ImInfo />,
+                    id: uuidv4().toString(),
+                    hasImage: false,
+                    name:"About",
+                    image: '',
+                    title: '',
+                    titleAlign: 'left',
+                    sectionTitle: '',
+                    subTitle: 'Tell your audience more about yourself',
+                    body: '',
+                    descAlign: 'left',
                     type: 'about',
+                    imageLink: '',
+                    imageFile: null,
+                    isHidden: false,
+                    icon: <ImInfo />,
                 },
                 {
                     id: uuidv4().toString(),
@@ -35,7 +47,7 @@ const ProfileModalContens = ({ handleClick, setShowModal,uuidv4 }) => {
                 },
                 {
                     name: 'Links',
-                    desc: 'Add links to your relevant resources',
+                    subTitle: 'Add links to your relevant resources',
                     icon: <AiOutlineLink />,
                     type: 'links',
                 },
@@ -134,7 +146,7 @@ const ProfileModalContens = ({ handleClick, setShowModal,uuidv4 }) => {
                                     {item.name}
                                 </div>
                                 <div className="text-gray-500 text-sm">
-                                    {item.desc}
+                                    {item.subTitle}
                                 </div>
                             </div>
                             <div className="text-gray-500">

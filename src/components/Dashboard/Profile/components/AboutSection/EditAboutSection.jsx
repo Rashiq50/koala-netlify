@@ -346,14 +346,10 @@ const EditAboutSection = ({
                 />
             </div>
 
-            <div className="mt-8 mb-4 uppercase text-semibold text-xl">
-                CONTENT AREA
+            <div className="mt-8 mb-2 text-semibold text-lg">
+                Description
             </div>
-            <div className="my-2 text-gray-500">
-                General text block to write anything you want in bold, italic,
-                lists, emojis or code format.
-            </div>
-            <div className="my-2 text-gray-500">Text</div>
+
             <div className="mb-10">
                 <ReactQuill
                     theme="snow"

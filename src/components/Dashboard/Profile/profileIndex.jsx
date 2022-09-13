@@ -16,6 +16,8 @@ import { IoMdClose } from 'react-icons/io'
 import ProfileModalContens from './components/ProfileModalContents'
 import EditTextSection from './components/TextSection/EditTextSection'
 import EditAboutSection from './components/AboutSection/EditAboutSection'
+import { ImImage, ImInfo } from 'react-icons/im'
+import { RiText } from 'react-icons/ri'
 
 // const types = [
 //     textType:{
@@ -62,7 +64,7 @@ export default function ProfileIndex() {
                 </p>`,
                 type: 'text',
                 isHidden: true,
-                show: false,
+                icon: <RiText fontSize={"24px"} />,
             },
             {
                 id: uuidv4().toString(),
@@ -76,7 +78,7 @@ export default function ProfileIndex() {
                 descAlign: 'left',
                 type: 'image',
                 isHidden: false,
-                show: false,
+                icon: <ImImage fontSize={"24px"} />,
             },
             {
                 id: uuidv4().toString(),
@@ -92,7 +94,7 @@ export default function ProfileIndex() {
                 imageLink: '',
                 imageFile: null,
                 isHidden: false,
-                show: false,
+                icon: <ImInfo fontSize={"24px"} />,
             },
         ],
     })
@@ -276,11 +278,7 @@ export default function ProfileIndex() {
                                                                     <MovableProfileParts
                                                                         key={uuidv4().toString()}
                                                                         icon={
-                                                                            <BiPieChart
-                                                                                fontSize={
-                                                                                    '28px'
-                                                                                }
-                                                                            />
+                                                                            section.icon
                                                                         }
                                                                         handleClick={
                                                                             handleClick
